@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -22,20 +23,19 @@ import com.alibaba.druid.support.http.WebStatFilter;
 
 @Configuration
 public class DataSourceConfig {
-	
+
 	private final String MAPPER_LOCATION = "classpath:sql/*.xml";
-	
+
 	@Value("${jdbc.url}")
-    private String url;
- 
-    @Value("${jdbc.username}")
-    private String user;
- 
-    @Value("${jdbc.password}")
-    private String password;
-    
-    
-    @Bean
+	private String url;
+
+	@Value("${jdbc.username}")
+	private String user;
+
+	@Value("${jdbc.password}")
+	private String password;
+
+	@Bean
 	public ServletRegistrationBean druidServlet() {
 		ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean();
 		servletRegistrationBean.setServlet(new StatViewServlet());
@@ -55,38 +55,41 @@ public class DataSourceConfig {
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
 		filterRegistrationBean.setFilter(new WebStatFilter());
 		filterRegistrationBean.addUrlPatterns("/*");
-		filterRegistrationBean.addInitParameter("exclusions",
-				"*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+		filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
 		return filterRegistrationBean;
 	}
-    
-    @Bean
-    @Primary
-    public DataSource dataSource() {
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl(url);
-        dataSource.setUsername(user);
-        dataSource.setPassword(password);
-        return dataSource;
-    }
-    
-    @Bean
-    @Primary
-    public DataSourceTransactionManager transactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
-    
-    @Bean
-    @Primary
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource)
-            throws Exception {
-        SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource);
-        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
-                .getResources(MAPPER_LOCATION));
-        return sessionFactory.getObject();
-    }
-	
-	
-	
+
+	@Bean
+	@Primary
+	public DataSource dataSource() {
+		DruidDataSource dataSource = new DruidDataSource();
+		dataSource.setUrl(url);
+		dataSource.setUsername(user);
+		dataSource.setPassword(password);
+		return dataSource;
+	}
+
+	@Bean
+	@Primary
+	public DataSourceTransactionManager transactionManager(DataSource dataSource) {
+		return new DataSourceTransactionManager(dataSource);
+	}
+
+	@Bean(name = "sqlSessionFactory")
+	@Primary
+	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+		sessionFactory.setDataSource(dataSource);
+		sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(MAPPER_LOCATION));
+		return sessionFactory.getObject();
+	}
+
+	@Bean
+	public MapperScannerConfigurer mapperScannerConfigurer() {
+		MapperScannerConfigurer t = new MapperScannerConfigurer();
+		t.setSqlSessionFactoryBeanName("sqlSessionFactory");
+		t.setBasePackage("com.pfq.deal.trans_listing.dao");
+		return t;
+	}
+
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 用于配置dubbo服务 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://code.alibabatech.com/schema/dubbo
+						http://code.alibabatech.com/schema/dubbo/dubbo.xsd" default-autowire="byName">
+
+    <!-- dubbo public config start-->
+    <dubbo:application name="order" owner="jacky.huang"/>
+
+    <dubbo:registry protocol="zookeeper" client="zkclient" address="${dubbo.registry.address}" group="${dubbo.registry.group}"></dubbo:registry>
+
+    <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}"></dubbo:protocol>
+
+    <dubbo:provider retries="${dubbo.provider.retries}" timeout="${dubbo.provider.timeout}" threadpool="fixed" threads="30" accepts="300"></dubbo:provider>
+    <!-- dubbo public config start-->
+
+	 <dubbo:service interface="com.pfq.deal.trans_listing.provider.ICommody" ref="commodyProvider"></dubbo:service>
+    
+	
+</beans>

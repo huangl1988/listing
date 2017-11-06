@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pfq.deal.trans.dal.bill.dao.UserRelationDao">
+
+	<insert id="insert" parameterType="com.pfq.deal.trans_listing.dto.CommodyDTO">
+		INSERT INTO tb_commody(
+		commodity_code,
+		price,
+		commoditiy_name
+		)
+		VALUES(
+		#{commodyCode},
+		#{commodyPrice},
+		#{commodyName}
+		)
+
+
+	</insert>
+
+	<update id="update" parameterType="com.pfq.deal.trans_listing.dto.CommodyDTO">
+		UPDATE tb_commody
+		SET
+		<if test="commodyCode!=null">
+			commodity_code=#{commodyCode},
+		</if>
+		<if test="commodyPrice!=null">
+			price=#{commodyPrice},
+		</if>
+		<if test="commoditiyName!=null">
+			commoditiy_name=#{commoditiyName},
+		</if>
+		<if test="startTime!=null">
+			start_time=#{startTime},
+		</if>
+		<if test="endTime!=null">
+			end_time=#{endTime},
+		</if>
+		<if test="showFlag!=null">
+			show_flag=#{showFlag},
+		</if>
+		 updatetime=now()
+		 where 
+		 	id=#{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM tb_commody WHERE id=#{id}
+	</delete>
+
+
+</mapper>
