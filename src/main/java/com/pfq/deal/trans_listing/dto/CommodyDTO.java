@@ -17,15 +17,7 @@ public class CommodyDTO{
 	
 	private String commodyName;
 	
-	private Long commodyPrice;
-	
 	private String commodyCode;
-	
-	private Date endTime;
-	
-	private Date startTime;
-	
-	private byte showFlag;
 	
 	private Date inserttime;
 	

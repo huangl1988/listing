@@ -1,17 +1,19 @@
 package com.pfq.deal.trans_listing.bean.output.commody;
 
-import com.pfq.deal.trans_listing.bean.output.IBaseOutput;
+import com.pfq.deal.trans_listing.bean.output.BaseOutput;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RetCommodyVo implements IBaseOutput{
+@EqualsAndHashCode(callSuper=true)
+public class RetCommodyVo extends  BaseOutput{
 
 	private String commodyName;
 
@@ -26,14 +28,5 @@ public class RetCommodyVo implements IBaseOutput{
 	private byte showFlag;
 
 	private Long id;
-
-	/**
-	 * 返回值
-	 */
-	private String code;
-	/**
-	 * 返回结果
-	 */
-	private String msg;
 
 }

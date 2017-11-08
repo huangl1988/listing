@@ -10,6 +10,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.gson.Gson;
+import com.pfq.deal.trans_listing.bean.output.BaseOutput;
 import com.pfq.deal.trans_listing.bean.output.commody.RetCreateVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class ListingCtrAop {
 			log.info(targetMethod.getName() +" cost "+(System.currentTimeMillis()-time)+"! result:"+(result==null?"empty":new Gson().toJson(result)));
 		} catch (Throwable e) {
 			log.error("error",e);
-			return new RetCreateVo("", "fail", "system error");
+			return new BaseOutput("fail", "system error");
 		}
 		return result;
 	}

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication(exclude = {FreeMarkerAutoConfiguration.class,DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
 @ImportResource("classpath:provider.xml")
-@ComponentScan
+@ComponentScan(basePackages="com.pfq")
 public class Main {
 	
 	 public static void main(String[] args) {

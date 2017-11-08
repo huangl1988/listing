@@ -1,14 +1,15 @@
 package com.pfq.deal.trans_listing.config;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -22,19 +23,11 @@ import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 
 @Configuration
+@EnableConfigurationProperties
 public class DataSourceConfig {
 
 	private final String MAPPER_LOCATION = "classpath:sql/*.xml";
-
-	@Value("${jdbc.url}")
-	private String url;
-
-	@Value("${jdbc.username}")
-	private String user;
-
-	@Value("${jdbc.password}")
-	private String password;
-
+	
 	@Bean
 	public ServletRegistrationBean druidServlet() {
 		ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean();
@@ -59,32 +52,31 @@ public class DataSourceConfig {
 		return filterRegistrationBean;
 	}
 
-	@Bean
+	@Bean(initMethod="init",destroyMethod="close")
+	@ConfigurationProperties(prefix = "jdbc")
 	@Primary
-	public DataSource dataSource() {
-		DruidDataSource dataSource = new DruidDataSource();
-		dataSource.setUrl(url);
-		dataSource.setUsername(user);
-		dataSource.setPassword(password);
-		return dataSource;
+	public DruidDataSource dataSource() throws SQLException {
+		return  new DruidDataSource();
 	}
 
 	@Bean
 	@Primary
-	public DataSourceTransactionManager transactionManager(DataSource dataSource) {
+	public DataSourceTransactionManager transactionManager(DruidDataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 
 	@Bean(name = "sqlSessionFactory")
 	@Primary
-	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+	public SqlSessionFactory sqlSessionFactory(DruidDataSource dataSource) throws Exception {
 		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
 		sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(MAPPER_LOCATION));
+		sessionFactory.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("classpath:mybatis-config.xml"));
 		return sessionFactory.getObject();
 	}
 
 	@Bean
+	@Primary
 	public MapperScannerConfigurer mapperScannerConfigurer() {
 		MapperScannerConfigurer t = new MapperScannerConfigurer();
 		t.setSqlSessionFactoryBeanName("sqlSessionFactory");
