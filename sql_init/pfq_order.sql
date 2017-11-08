@@ -10,33 +10,26 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2017-11-07 19:17:35
+Date: 2017-11-08 14:45:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for tb_charge_snap_shot
+-- Table structure for tb_activity
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_charge_snap_shot`;
-CREATE TABLE `tb_charge_snap_shot` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` varchar(11) NOT NULL COMMENT '用户Id',
-  `isactive` tinyint(1) NOT NULL DEFAULT '1' COMMENT '逻辑删除',
-  `inserttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
-  `updatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `date` char(8) NOT NULL COMMENT '时间（yyyymmdd）',
-  `default_int` tinyint(1) NOT NULL DEFAULT '2' COMMENT '默认次数',
-  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0 初始状态 10 进行中',
-  `result` tinyint(4) NOT NULL DEFAULT '0' COMMENT '充值结果',
-  `user_name` varchar(50) NOT NULL COMMENT '用户名',
-  `amount` bigint(20) NOT NULL COMMENT '金额',
-  `optUserName` varchar(50) NOT NULL COMMENT '操作人',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_uid_date` (`user_id`,`date`) USING BTREE,
-  KEY `idx_inserttime` (`inserttime`),
-  KEY `idx_updatetime` (`updatetime`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='后台代扣快照 /*# Owner: huangliang ;Manager: yangyang #*/';
+DROP TABLE IF EXISTS `tb_activity`;
+CREATE TABLE `tb_activity` (
+  `id` bigint(20) NOT NULL,
+  `activity_name` varchar(50) NOT NULL,
+  `percent` float NOT NULL,
+  `starttime` datetime DEFAULT NULL,
+  `endtime` datetime DEFAULT NULL,
+  `inserttime` datetime NOT NULL,
+  `updatetime` datetime NOT NULL,
+  `is_on` varchar(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for tb_commodity
@@ -96,6 +89,8 @@ CREATE TABLE `tb_order_details` (
   `activity_id` bigint(20) DEFAULT NULL,
   `inserttime` datetime DEFAULT NULL,
   `updatetime` datetime DEFAULT NULL,
+  `real_price` decimal(10,2) NOT NULL,
+  `number` int(5) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -114,6 +109,7 @@ CREATE TABLE `tb_order_info` (
   `total_price` decimal(10,2) NOT NULL,
   `is_over` char(1) DEFAULT NULL,
   `rest_price` decimal(10,2) DEFAULT NULL,
+  `total_number` int(5) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
