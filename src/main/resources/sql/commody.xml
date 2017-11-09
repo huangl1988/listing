@@ -26,7 +26,7 @@
 			commodity_code=#{commodyCode},
 		</if>
 		<if test="commoditiyName!=null">
-			commoditiy_name=#{commoditiyName},
+			commoditiy_name=#{commodyName},
 		</if>
 		 updatetime=now()
 		 WHERE 

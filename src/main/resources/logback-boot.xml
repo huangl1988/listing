@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<configuration>  
+  
+    <!-- 文件输出格式 -->  
+    <property name="PATTERN" value="%date{ISO8601} %-5level [%thread] %logger{32} - %message%n" />  
+     
+  
+    <!-- 开发环境 -->  
+    <springProfile name="dev">  
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">  
+            <encoder>  
+                <pattern>${PATTERN}</pattern>  
+            </encoder>  
+        </appender>
+        <root level="debug">  
+            <appender-ref ref="CONSOLE" />  
+        </root>  
+    </springProfile>  
+  
+    <!-- 测试环境 -->  
+    <springProfile name="test">  
+        <!-- 每天产生一个文件 -->  
+        <appender name="TEST-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+            <!-- 文件路径 -->  
+            <file>/var/${application.name}/logs</file>  
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+                <!-- 文件名称 -->  
+                <fileNamePattern>/var/${application.name}/logs/info.%d{yyyy-MM-dd}.log</fileNamePattern>  
+                <!-- 文件最大保存历史数量 -->  
+                <MaxHistory>100</MaxHistory>  
+            </rollingPolicy>  
+              
+            <layout class="ch.qos.logback.classic.PatternLayout">  
+                <pattern>${PATTERN}</pattern>  
+            </layout>  
+        </appender>  
+          
+        <root level="info">  
+            <appender-ref ref="TEST-FILE" />  
+        </root>  
+    </springProfile>
+    <logger name="com.ibatis" level="DEBUG" />
+    <logger name="java.sql.Connection" level="DEBUG" />
+    <logger name="java.sql.Statement" level="DEBUG" />
+    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+</configuration> 
