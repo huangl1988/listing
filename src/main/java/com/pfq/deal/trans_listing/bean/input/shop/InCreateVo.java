@@ -1,9 +1,8 @@
-package com.pfq.deal.trans_listing.bean.input.commody;
+package com.pfq.deal.trans_listing.bean.input.shop;
 
 import com.pfq.deal.trans_listing.bean.input.IBaseInput;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -11,13 +10,20 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class InCreateVo implements IBaseInput{
 	@NonNull
-	private String commodyName;
+	private String shopName;
 	@NonNull
-	private String commodyCode;
-	
 	private String shopCode;
+	@NonNull
+	private String shopAddres;
+	@NonNull
+	private String startTime;
+	@NonNull
+	private String endTime;
+	@NonNull
+	private String point;
+
+	private Integer region_id;
 	
 }

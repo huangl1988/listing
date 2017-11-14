@@ -7,7 +7,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.eclipse.jetty.http.HttpStatus;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 
 import com.google.gson.Gson;
 import com.pfq.deal.trans_listing.bean.output.BaseOutput;
@@ -36,7 +38,7 @@ public class ListingCtrAop {
 			log.info(targetMethod.getName() +" cost "+(System.currentTimeMillis()-time)+"! result:"+(result==null?"empty":new Gson().toJson(result)));
 		} catch (Throwable e) {
 			log.error("error",e);
-			return new BaseOutput("fail", "system error");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(new BaseOutput("fail", "system error"));
 		}
 		return result;
 	}

@@ -1,8 +1,9 @@
-package com.pfq.deal.trans_listing.controller.impl;
+package com.pfq.deal.trans_listing.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,12 +19,14 @@ import com.pfq.deal.trans_listing.service.CommodyService;
 
 @RestController
 @RequestMapping("/v1/sys/admin/commodies")
+
 public class CommodyController {
 
 	@Autowired
 	CommodyService commodyService;
 
 	@RequestMapping(value = "/commody", method = RequestMethod.POST)
+	@ExceptionHandler
 	public ResponseEntity<IBaseOutput> create(InCreateVo inputVo) {
 		RetCreateVo vo = RetCreateVo.builder().id(commodyService.create(inputVo)).build();
 		return ResponseEntity.status(HttpStatus.CREATED).body(vo);

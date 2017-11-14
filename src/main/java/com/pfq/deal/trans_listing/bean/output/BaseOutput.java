@@ -1,6 +1,7 @@
 package com.pfq.deal.trans_listing.bean.output;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
