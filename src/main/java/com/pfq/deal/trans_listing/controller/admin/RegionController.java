@@ -1,7 +1,9 @@
 package com.pfq.deal.trans_listing.controller.admin;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import com.pfq.deal.trans_listing.bean.output.region.RegionsOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,5 +71,15 @@ public class RegionController {
 			throw new BusinessException("id is not exist!");
 		}
 	}
-	
+
+	@RequestMapping(value="/",method=RequestMethod.GET)
+	public ResponseEntity<RegionsOutput> select(){
+		try{
+			return ResponseEntity.ok(regionService.selectList());
+		}catch(NullPointerException e){
+			log.error("error",e);
+			throw new BusinessException("id is not exist!");
+		}
+	}
+
 }

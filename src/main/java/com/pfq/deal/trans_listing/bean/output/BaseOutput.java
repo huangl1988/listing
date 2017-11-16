@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class BaseOutput implements IBaseOutput {
 	
 	/**
@@ -18,5 +19,9 @@ public class BaseOutput implements IBaseOutput {
 	 * 返回结果
 	 */
 	private String msg;
-	
+
+	public void doSucc(){
+		code="succ";
+		msg="succ";
+	}
 }

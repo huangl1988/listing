@@ -3,6 +3,8 @@ package com.pfq.deal.trans_listing.service;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import com.pfq.deal.trans_listing.bean.output.region.RegionsOutput;
+import lombok.experimental.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +52,7 @@ public class RegionService {
 
 	public RegionOutputVo select(Integer id) {
 		
-		return toRegionOutputVo(regionDao.select(id));
+		return toRegionOutputVo(Optional.ofNullable(regionDao.select(id)).orElse(RegionDto.builder().build()));
 
 	}
 	
@@ -58,7 +60,18 @@ public class RegionService {
 		RegionOutputVo s=RegionOutputVo.builder().city(vo.getCity()).regionName(vo.getRegionName()).id(vo.getId()).build(); 
 		return s;
 	}
-	
-	
-	
+
+
+    public RegionsOutput selectList() {
+
+		var retList = new java.util.ArrayList<RegionOutputVo>();
+		Optional.ofNullable(regionDao.selectList()).ifPresent(regionDtos -> {
+			regionDtos.forEach(regionDto -> {
+				retList.add(toRegionOutputVo(regionDto));
+			});
+		});
+
+		RegionsOutput retInfo = RegionsOutput.builder().list(retList).build();
+		return retInfo;
+    }
 }

@@ -24,6 +24,6 @@ public class InCreateVo implements IBaseInput{
 	@NonNull
 	private String point;
 
-	private Integer region_id;
+	private Integer regionId;
 	
 }
