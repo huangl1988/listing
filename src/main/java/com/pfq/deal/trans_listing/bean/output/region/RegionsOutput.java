@@ -11,8 +11,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(callSuper = false)
+@Builder
 public class RegionsOutput extends BaseOutput {
 
     private List<RegionOutputVo> list;

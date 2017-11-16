@@ -1,15 +1,19 @@
 package com.pfq.deal.trans_listing.bean.output;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class BaseOutput implements IBaseOutput {
+	
+	
+	public BaseOutput(String code,String msg){
+		this.code=code;
+		this.msg=msg;
+	}
+	
+	public BaseOutput(){
+		
+	}
 	
 	/**
 	 * 返回值
@@ -24,4 +28,10 @@ public class BaseOutput implements IBaseOutput {
 		code="succ";
 		msg="succ";
 	}
+	
+	public void doError(String msg){
+		code="error";
+		msg=msg;
+	}
+	
 }

@@ -1,4 +1,4 @@
-package com.pfq.deal.trans_listing.bean.output.Shop;
+package com.pfq.deal.trans_listing.bean.output.shop;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
