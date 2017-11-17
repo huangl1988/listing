@@ -1,7 +1,10 @@
 package com.pfq.deal.trans_listing.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import lombok.experimental.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,7 @@ public class ShopService {
         return toShopInfo(Optional.ofNullable(shopDao.select(shopId)).orElse(ShopDto.builder().build()));
     }
 
-    private ShopInfo toShopInfo(ShopDto shop){
+    private ShopInfo toShopInfo(ShopDto shop) {
         return ShopInfo.builder().endTime(DateUtils.getDateString(shop.getEndTime()))
                 .id(shop.getId())
                 .point(shop.getPoint())
@@ -40,7 +43,7 @@ public class ShopService {
                 .startTime(DateUtils.getDateString(shop.getStartTime())).build();
     }
 
-    private ShopDto toShopDto(InCreateVo inputVo){
+    private ShopDto toShopDto(InCreateVo inputVo) {
 
 
         return ShopDto.builder().point(inputVo.getPoint())
@@ -52,4 +55,24 @@ public class ShopService {
                 .startTime(DateUtils.getTimeDate(inputVo.getStartTime())).build();
     }
 
+    public void delete(Integer id) {
+        shopDao.delete(id);
+    }
+
+    public void update(InCreateVo inputVo, Integer id) {
+        ShopDto dto = toShopDto(inputVo);
+        dto.setId(id);
+        shopDao.update(dto);
+    }
+
+    public List<ShopInfo> selectList(Integer regionId) {
+        var retList = new ArrayList<ShopInfo>();
+        Optional.ofNullable(shopDao.selectList(regionId)).ifPresent(lists -> {
+            lists.forEach(dto -> {
+                retList.add(toShopInfo(dto));
+            });
+        });
+
+        return retList;
+    }
 }

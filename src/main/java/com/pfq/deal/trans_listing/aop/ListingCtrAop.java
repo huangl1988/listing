@@ -2,6 +2,7 @@ package com.pfq.deal.trans_listing.aop;
 
 import java.lang.reflect.Method;
 
+import com.pfq.deal.trans_listing.exception.BusinessException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -36,9 +37,16 @@ public class ListingCtrAop {
 			doBefore(clazz, targetMethod, args);
 			result = pjp.proceed();
 			log.info(targetMethod.getName() +" cost "+(System.currentTimeMillis()-time)+"! result:"+(result==null?"empty":new Gson().toJson(result)));
-		} catch (Throwable e) {
+		} catch (BusinessException e){
 			log.error("error",e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(new BaseOutput("fail", "system error"));
+			BaseOutput baseResbo =new BaseOutput();
+			baseResbo.doError(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(baseResbo);
+		}catch (Throwable e) {
+			log.error("error",e);
+			BaseOutput baseResbo =new BaseOutput();
+			baseResbo.doError("system error");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).body(baseResbo);
 		}
 		return result;
 	}

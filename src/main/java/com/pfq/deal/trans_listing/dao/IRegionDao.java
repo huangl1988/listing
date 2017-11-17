@@ -14,6 +14,5 @@ public interface IRegionDao {
 
 	RegionDto select(Integer id);
 
-
     List<RegionDto> selectList();
 }

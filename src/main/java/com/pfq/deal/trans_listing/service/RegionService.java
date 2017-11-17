@@ -71,7 +71,8 @@ public class RegionService {
 			});
 		});
 
-		RegionsOutput retInfo = RegionsOutput.builder().list(retList).build();
+		RegionsOutput retInfo = new RegionsOutput();
+		retInfo.setList(retList);
 		return retInfo;
     }
 }

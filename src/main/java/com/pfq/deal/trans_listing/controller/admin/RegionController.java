@@ -30,7 +30,7 @@ public class RegionController {
 	public ResponseEntity<IBaseOutput> create(InCreateVo inputVo){
 		try{
 			regionService.doSave(inputVo);
-			return ResponseEntity.ok(new BaseOutput("succ","succ"));
+			return ResponseEntity.ok(new BaseOutput());
 		}catch(SQLException e){
 			log.error("error",e);
 			throw new BusinessException("info has been deal or try it another time!");
@@ -42,7 +42,7 @@ public class RegionController {
 		try{
 			inputVo.setId(id);
 			regionService.update(inputVo);
-			return ResponseEntity.ok(new BaseOutput("succ","succ"));
+			return ResponseEntity.ok(new BaseOutput());
 		}catch(SQLException e){
 			log.error("error",e);
 			throw new BusinessException("info has been deal or try it another time!");
@@ -54,7 +54,7 @@ public class RegionController {
 		try{
 			
 			regionService.delete(id);
-			return ResponseEntity.ok(new BaseOutput("succ","succ"));
+			return ResponseEntity.ok(new BaseOutput());
 		}catch(SQLException e){
 			log.error("error",e);
 			throw new BusinessException("info has been deal or try it another time!");

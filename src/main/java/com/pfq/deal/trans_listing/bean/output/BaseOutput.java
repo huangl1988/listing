@@ -6,13 +6,10 @@ import lombok.Data;
 public class BaseOutput implements IBaseOutput {
 	
 	
-	public BaseOutput(String code,String msg){
-		this.code=code;
-		this.msg=msg;
-	}
+
 	
 	public BaseOutput(){
-		
+		this.doSucc();
 	}
 	
 	/**
