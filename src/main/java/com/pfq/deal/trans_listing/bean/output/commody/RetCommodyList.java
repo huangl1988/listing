@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RetCommodyList extends  BaseOutput{
 
-	private List<RetCommodyVo> retList;
+	private List<CommodyInfoVo> retList;
 	
 
 }

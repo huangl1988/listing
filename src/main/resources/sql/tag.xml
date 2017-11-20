@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pfq.deal.trans_listing.dao.ITagDao">
+
+    <sql id="tag_details">
+        tag_name AS tagName,
+        shop_id AS shopId,
+        id AS id
+    </sql>
+
+    <insert id="saveTag" parameterType="com.pfq.deal.trans_listing.dto.TagDto">
+        INSERT INTO tb_tag(
+          tagName,
+          shop_id
+        )
+        VALUES(
+          #{tagName},
+          #{shopId}
+        )
+    </insert>
+
+    <delete id="delete">
+        DELETE  FROM  tb_tag  WHERE id=#{id}
+    </delete>
+
+    <select id="findTagDto" resultType="com.pfq.deal.trans_listing.dto.StyleCookingDto">
+        SELECT
+        <include refid="tag_details"/>
+        FROM  tb_tag
+        WHERE
+          id=#{id}
+    </select>
+</mapper>

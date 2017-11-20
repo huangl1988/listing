@@ -17,7 +17,7 @@ public class InCreateVo implements IBaseInput{
 	private String commodyName;
 	@NonNull
 	private String commodyCode;
-	
-	private String shopCode;
+
+	private Integer shopId;
 	
 }

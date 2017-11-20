@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pfq.deal.trans_listing.dao.IStyleCookingDao">
+
+    <sql id="stylecooking_details">
+        style_name AS styleName,
+        inserttime AS inserttime
+    </sql>
+
+    <insert id="save" parameterType="com.pfq.deal.trans_listing.dto.StyleCookingDto">
+        INSERT INTO tb_stylecooking(
+          style_name
+        )
+        VALUES(
+          #{styleName}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.pfq.deal.trans_listing.dto.StyleCookingDto">
+        UPDATE tb_stylecooking
+        SET
+        <if test="styleName!=null">
+            style_name=#{styleName},
+        </if>
+
+        updatetime=now()
+        WHERE
+        id=#{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM tb_stylecooking WHERE id=#{id} AND NOT EXISTS (
+        SELECT
+        1
+        FROM
+        tb_shop_stylecooking_commdoy WHERE tb_stylecooking.id = tb_shop_stylecooking_commdoy.style_id
+        )
+    </delete>
+
+    <select id="select" resultType="com.pfq.deal.trans_listing.dto.StyleCookingDto">
+        SELECT
+        <include refid="stylecooking_details"/>
+        FROM  tb_stylecooking
+        WHERE
+        id=#{id}
+    </select>
+
+    <select id="selectList" resultType="com.pfq.deal.trans_listing.dto.StyleCookingDto">
+        SELECT
+          <include refid="stylecooking_details"/>
+        FROM  tb_stylecooking
+        WHERE
+          1=1
+
+    </select>
+</mapper>

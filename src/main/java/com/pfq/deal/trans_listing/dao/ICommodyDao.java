@@ -16,7 +16,7 @@ public interface ICommodyDao {
 
 	CommodyDTO select(@Param("id")Long id);
 
-	List<CommodyDTO> selectList();
+	List<CommodyDTO> selectList(@Param("shopId") Integer shopId);
 	
 	
 	

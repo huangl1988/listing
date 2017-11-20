@@ -25,21 +25,11 @@ public class CommodyController {
 	@Autowired
 	CommodyService commodyService;
 
-	@RequestMapping(value = "/commody", method = RequestMethod.POST)
+	@RequestMapping(value = "/commody/", method = RequestMethod.POST)
 	@ExceptionHandler
 	public ResponseEntity<IBaseOutput> create(InCreateVo inputVo) {
 		RetCreateVo vo = RetCreateVo.builder().id(commodyService.create(inputVo)).build();
 		return ResponseEntity.status(HttpStatus.CREATED).body(vo);
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<IBaseOutput> update(@PathVariable Long id, InUpdateVo inputVo) {
-		inputVo.setId(id);
-		commodyService.update(inputVo);
-		RetCreateVo vo = RetCreateVo.builder().build();
-		vo.setCode("succ");
-		vo.setMsg("成功");
-		return ResponseEntity.status(HttpStatus.OK).body(vo);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

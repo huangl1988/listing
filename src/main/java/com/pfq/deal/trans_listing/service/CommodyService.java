@@ -1,9 +1,13 @@
 package com.pfq.deal.trans_listing.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collector;
 
+import com.pfq.deal.trans_listing.bean.output.commody.CommodyInfoVo;
+import com.pfq.deal.trans_listing.bean.output.tag.TagInfo;
+import com.pfq.deal.trans_listing.dto.ShopCommodyDto;
+import com.pfq.deal.trans_listing.dto.TagDto;
+import lombok.experimental.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +18,21 @@ import com.pfq.deal.trans_listing.bean.output.commody.RetCommodyVo;
 import com.pfq.deal.trans_listing.dao.ICommodyDao;
 import com.pfq.deal.trans_listing.dto.CommodyDTO;
 import com.pfq.deal.trans_listing.util.DateUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommodyService {
 
 	@Autowired
 	ICommodyDao commodyDao;
+	@Autowired
+	ShopService shopService;
+
 
 	public String create(InCreateVo inputVo) {
 
 		CommodyDTO dto = CommodyDTO.builder().commodyCode(inputVo.getCommodyCode())
-				.commodyName(inputVo.getCommodyName()).build();
+				.commodyName(inputVo.getCommodyName()).shopId(inputVo.getShopId()).build();
 
 		return commodyDao.insert(dto) + "";
 	}
@@ -38,30 +46,50 @@ public class CommodyService {
 
 		commodyDao.update(dto);
 	}
-
+	@Transactional
 	public void delete(Long id) {
-
+		shopService.deleteCommodyInfo(null,id);
 		commodyDao.delete(id);
 	}
 
 	public RetCommodyVo findById(Long id) {
 
-		return dtoToCommodyVo(Optional.ofNullable(commodyDao.select(id)).orElse(null));
+		return dtoToRetCommodyVo(toCommodyInfo(Optional.ofNullable(commodyDao.select(id)).orElse(null)));
 	}
 
-	public RetCommodyVo dtoToCommodyVo(CommodyDTO dto) {
-		if (dto == null) {
-			return RetCommodyVo.builder().build();
-		}
-		return RetCommodyVo.builder().commodyCode(dto.getCommodyCode()).commodyName(dto.getCommodyName()).id(dto.getId()).build();
+	public RetCommodyVo dtoToRetCommodyVo(CommodyInfoVo infoVo) {
+
+		return RetCommodyVo.builder().
+				commodyInfo(Optional.ofNullable(infoVo).orElse(CommodyInfoVo.builder().build())).build();
+	}
+	private CommodyInfoVo toCommodyInfo(CommodyDTO dto){
+		if(dto==null)
+			return null;
+		ShopCommodyDto shopCommodyDto=shopService.getShopCommodyByCommodyId(dto.getId());
+		List<TagDto> tagsList= shopService.getTagList(dto.getId());
+		List<TagInfo> tags = Arrays.asList();
+		Optional.ofNullable(tagsList).ifPresent(list->{list.parallelStream().forEach(tagDto -> {
+			 tags.add(TagInfo.builder().id(tagDto.getId()).tagName(tagDto.getTagName()).build());
+		});});
+		return CommodyInfoVo.builder()
+				.commody_id(dto.getId())
+				.commodyCode(dto.getCommodyCode())
+				.commodyName(dto.getCommodyName())
+				.inserttime(DateUtils.getDateString(dto.getInserttime()))
+				.isSelect(shopCommodyDto.getCommody_id()==null?0:1)
+				.picture_url(shopCommodyDto.getPicture_url())
+				.shop_price(shopCommodyDto.getShop_price())
+				.show_flag(shopCommodyDto.getShow_flag())
+				.showTime(DateUtils.getDateString(shopCommodyDto.getShowTime()))
+				.tags(tags).build();
 	}
 
-	public RetCommodyList selectList() {
-		List<RetCommodyVo> retList = new ArrayList<>();
+	public RetCommodyList selectList(Integer shopId) {
+		List<CommodyInfoVo> retList = new ArrayList<>();
 		RetCommodyList temp = RetCommodyList.builder().retList(retList).build();
-		Optional.ofNullable(commodyDao.selectList()).ifPresent(dtolist -> {
+		Optional.ofNullable(commodyDao.selectList(shopId)).ifPresent(dtolist -> {
 			dtolist.forEach(dto -> {
-				retList.add(dtoToCommodyVo(dto));
+				retList.add(toCommodyInfo(dto));
 			});
 		});
 		return temp;

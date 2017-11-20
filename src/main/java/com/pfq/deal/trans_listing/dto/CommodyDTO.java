@@ -22,5 +22,7 @@ public class CommodyDTO{
 	private Date inserttime;
 	
 	private Date updatetime;
+
+	private Integer shopId;
 	
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pfq.deal.trans_listing.dao.IRegionDao">
+	
+	<sql id="region_details">
+			region_name AS regionName,
+			city AS city,
+			updatetime AS updateTime
+
+	</sql>
+	
+	<insert id="save" parameterType="com.pfq.deal.trans_listing.dto.RegionDto">
+		INSERT INTO tb_region(
+		region_name,
+		city
+		)
+		VALUES(
+		#{regionName},
+		#{city}
+		) 
+	</insert>
+	
+	<update id="update" parameterType="com.pfq.deal.trans_listing.dto.RegionDto">
+		UPDATE tb_region
+		SET
+		<if test="regionName!=null">
+			region_name=#{regionName},
+		</if>
+		<if test="city!=null">
+			city=#{city},
+		</if>
+		 updatetime=now()
+		 WHERE 
+		 	id=#{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM tb_region WHERE id=#{id} AND NOT EXISTS (
+	SELECT
+		1
+	FROM
+		tb_shop WHERE tb_shop.region_id = tb_region.id
+	)
+	</delete>
+	
+	<select id="select" resultType="com.pfq.deal.trans_listing.dto.RegionDto">
+		SELECT	
+			<include refid="region_details"/>
+		 FROM  tb_region
+		 WHERE
+		 	id=#{id}
+	</select>
+	
+	<select id="selectList" resultType="com.pfq.deal.trans_listing.dto.RegionDto">
+		SELECT	
+			<include refid="region_details"/>
+		 FROM  tb_region
+		 WHERE
+			1=1
+	</select>
+</mapper>

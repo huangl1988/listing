@@ -5,16 +5,24 @@
 	<sql id="commodity_details">
 			commodity_code AS commodyCode,
 			commoditiy_name AS commodyName,
+			shop_id AS shopId,
 			inserttime AS inserttime
 	</sql>
 	
 	<insert id="insert" parameterType="com.pfq.deal.trans_listing.dto.CommodyDTO">
 		INSERT INTO tb_commodity(
 		commodity_code,
+		<if test="shopId!=null">
+			shop_id,
+		</if>
 		commoditiy_name
+
 		)
 		VALUES(
 		#{commodyCode},
+		<if test="shopId!=null">
+			#{shopId},
+		</if>
 		#{commodyName}
 		) 
 	</insert>
@@ -38,7 +46,7 @@
 	SELECT
 		1
 	FROM
-		tb_commody_shop WHERE tb_commody_shop.commody_code = tb_commodity.commodity_code
+		tb_commody_shop WHERE tb_commody_shop.commody_id = tb_commodity.id
 	)
 	</delete>
 	
@@ -54,5 +62,10 @@
 		SELECT	
 			<include refid="commodity_details"/>
 		 FROM  tb_commodity
+		 WHERE
+			1=1
+		<if test="shopId!=null">
+			AND shop_id=#{shopId}
+		</if>
 	</select>
 </mapper>

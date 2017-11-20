@@ -15,18 +15,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper=true)
 public class RetCommodyVo extends  BaseOutput{
 
-	private String commodyName;
-
-	private Long commodyPrice;
-
-	private String commodyCode;
-
-	private String startTime;
-
-	private String endTime;
-
-	private byte showFlag;
-
-	private Long id;
+	private CommodyInfoVo commodyInfo;
 
 }

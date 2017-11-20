@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pfq.deal.trans_listing.dao.IShopDao">
+	
+	<sql id="shop_details">
+			shop_name AS shopName,
+			shop_code AS shopCode,
+			shop_address AS shopAddres,
+			start_time AS startTime,
+			end_time AS endTime,
+			point,
+			region_id AS regionId,
+			id,
+			inserttime  AS  inserttime
+	</sql>
+	
+	<insert id="insert" keyProperty="id" parameterType="com.pfq.deal.trans_listing.dto.ShopDto">
+		INSERT INTO tb_commodity(
+			shop_name,
+			shop_code,
+			shop_address,
+			start_time,
+			end_time,
+			point,
+			region_id
+		)
+		VALUES(
+			#{shopName},
+			#{shopCode},
+			#{shopAddres},
+			#{startTime},
+			#{endTime},
+			#{point},
+			#{regionId}
+		) 
+	</insert>
+	
+	<update id="update" parameterType="com.pfq.deal.trans_listing.dto.CommodyDTO">
+		UPDATE tb_shop
+		SET
+		<if test="shopName!=null">
+			shop_name=#{shopName},
+		</if>
+		<if test="shopCode!=null">
+			shop_code=#{shopCode},
+		</if>
+		<if test="shopAddres!=null">
+			shop_address=#{shopAddres},
+		</if>
+		<if test="startTime!=null">
+			start_time=#{startTime},
+		</if>
+		<if test="endTime!=null">
+			end_time=#{endTime},
+		</if>
+		<if test="point!=null">
+			point=#{point},
+		</if>
+		 updatetime=now()
+		 WHERE 
+		 	id=#{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM tb_shop WHERE id=#{shopId} AND NOT EXISTS (
+	SELECT
+		1
+	FROM
+		tb_commody_shop WHERE tb_commody_shop.shop_id = tb_shop.id
+	)
+	</delete>
+	
+	<select id="select" resultType="com.pfq.deal.trans_listing.dto.ShopDto">
+		SELECT	
+			<include refid="shop_details"/>
+		 FROM  tb_shop
+		 WHERE
+		 	id=#{shopId}
+	</select>
+	
+	<select id="selectList" resultType="com.pfq.deal.trans_listing.dto.ShopDto">
+		SELECT	
+			<include refid="shop_details"/>
+		 FROM  tb_shop
+		 WHERE
+			1=1 AND region_id=#{region}
+	</select>
+</mapper>

@@ -1,13 +1,14 @@
 package com.pfq.deal.trans_listing.dao;
 
 import com.pfq.deal.trans_listing.dto.StyleCookingDto;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
  * Created by steven on 2017/11/17.
  */
-public interface IStyleCooking {
+public interface IStyleCookingDao {
 
 
     int save(StyleCookingDto dto);
@@ -19,4 +20,6 @@ public interface IStyleCooking {
     int update(StyleCookingDto dto);
 
     List<StyleCookingDto> selectList();
+
+
 }
