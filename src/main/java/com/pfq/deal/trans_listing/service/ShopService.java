@@ -137,7 +137,7 @@ public class ShopService {
 
     public void saveShopCommody(InCreateShopCommodyVo inputVo) {
 
-        if(shopDao.existCommodyInShop(inputVo.getCommody_id(),inputVo.getShop_id())){
+        if(shopDao.existCommodyInShop(inputVo.getCommody_id(),inputVo.getShop_id())>1){
 
             return;
         }
@@ -161,7 +161,6 @@ public class ShopService {
         tagDtoList.forEach(dto->{
             tagService.saveTag(dto);
         });
-        shopDao.saveTags(tagDtoList);
         shopDao.saveTagCommodyRef(shopId,commodyId,tagDtoList);
     }
 
@@ -185,7 +184,9 @@ public class ShopService {
     }
 
     public void updateCommodyInfo(Integer shopId, Long commodyId, InCreateShopCommodyVo inputVo) {
-        shopDao.updateCommodyInfo(shopId,commodyId,inputVo);
+        inputVo.setShop_id(shopId);
+        inputVo.setCommody_id(commodyId);
+        shopDao.updateCommodyInfo(toShopCommodyDto(inputVo));
     }
     @Transactional
     public void deleteCommodyInfo(Integer shopId, Long commodyId) {

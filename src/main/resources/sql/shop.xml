@@ -66,7 +66,7 @@
 	SELECT
 		1
 	FROM
-		tb_commody_shop WHERE tb_commody_shop.shop_id = tb_shop.id
+		tb_shop_commody WHERE tb_shop_commody.shop_id = tb_shop.id
 	)
 	</delete>
 	
@@ -84,5 +84,159 @@
 		 FROM  tb_shop
 		 WHERE
 			1=1 AND region_id=#{region}
+	</select>
+	<insert id="saveStyleCommodyRelation">
+		INSERT INTO tb_shop_style_commody(
+			shop_id,
+			style_id,
+			commody_id
+		  )
+		VALUES
+		 <foreach collection="commodyList" index="index" item="item" separator=",">
+			 (#{shopId},#{styleId},#{item})
+		 </foreach>
+	</insert>
+	<insert id="saveStyle">
+		INSERT INTO tb_shop_style(
+			style_id,
+			shop_id
+		)
+		VALUES (
+			#{styleId},
+			#{shopId}
+		)
+	</insert>
+	<select id="selectStyleExist" resultType="Integer">
+		SELECT count(1) FROM tb_shop_style WHERE 1=1
+		<if test="shopId!=null">
+			AND shop_id=#{shopId}
+		</if>
+		<if test="styleId!=null">
+			AND style_id=#{styleId}
+		</if>
+	</select>
+
+	<delete id="deleteStyle">
+		DELETE  FROM  tb_shop_style WHERE 1=1
+		<if test="shopId!=null">
+			AND shop_id=#{shopId}
+		</if>
+		<if test="styleId!=null">
+			AND style_id=#{styleId}
+		</if>
+	</delete>
+	<delete id="deleteStyleCommody">
+		DELETE FROM tb_shop_style_commody WHERE 1=1
+		<if test="shopId!=null">
+			AND shop_id=#{shopId}
+		</if>
+		<if test="styleId!=null">
+			AND style_id=#{styleId}
+		</if>
+		<if test="commodyId!=null">
+			AND commody_id=#{commodyId}
+		</if>
+	</delete>
+	<select id="existCommodyInShop" resultType="Integer">
+		SELECT
+			COUNT(1)
+		FROM tb_shop_commody WHERE 1=1
+		<if test="shopId!=null">
+			AND shop_id =#{shopId}
+		</if>
+		<if test="commodyId!=null">
+			AND commody_id=#{commodyId}
+		</if>
+	</select>
+	<insert id="saveShopCommody" parameterType="com.pfq.deal.trans_listing.dto.ShopCommodyDto">
+		INSERT INTO tb_shop_commody(
+			shop_id,
+			commody_id,
+			show_time,
+			show_flag,
+			picture_url,
+		  	shop_price
+		)VALUES (#{shop_id},#{commody_id},#{showTime},#{show_flag},#{picture_url},#{show_price})
+	</insert>
+	<insert id="saveTagCommodyRef">
+		INSERT INTO tb_shop_commody_tag(
+		shop_id,
+		tag_id,
+		commody_id
+		)
+		VALUES
+		<foreach collection="commodyList" index="index" item="item" separator=",">
+			(#{shopId},#{item.id},#{commdoyId})
+		</foreach>
+	</insert>
+	<delete id="deleteTagRef">
+		DELETE FROM  tb_shop_commody_tag WHERE 1=1
+		<if test="shopId!=null">
+			AND shop_id=#{shopId}
+		</if>
+		<if test="commodyId!=null">
+			AND commody_id=#{commodyId}
+		</if>
+		<if test="tagId!=null">
+			AND tag_id=#{tagId}
+		</if>
+	</delete>
+	<update id="updateCommodyInfo" parameterType="com.pfq.deal.trans_listing.dto.ShopCommodyDto">
+		UPDATE tb_shop_commody
+			SET
+			<if test="showTime!=null">
+				show_time=#{showTime},
+			</if>
+			<if test="show_flag!=null">
+				show_flag=#{show_flag},
+			</if>
+			<if test="picture_url!=null">
+				picture_url=#{picture_url},
+			</if>
+			<if test="show_price!=null">
+				show_price=#{show_price},
+			</if>
+			updatetime=now(),
+		WHERE shop_id=#{shop_id} AND commody_id=#{commody_id}
+	</update>
+	<delete id="deleteCommody">
+		DELETE FROM  tb_shop_commody WHERE 1=1
+		<if test="shopId!=null">
+			AND shop_id=#{shopId}
+		</if>
+		<if test="commodyId!=null">
+			AND commody_id=#{commodyId}
+		</if>
+	</delete>
+	<select id="getTagRef" resultType="Long">
+		SELECT tag_id FROM  tb_shop_commody_tag WHERE 1=1
+		<if test="shopId!=null">
+			AND shop_id=#{shopId}
+		</if>
+		<if test="commodyId!=null">
+			AND commody_id=#{commodyId}
+		</if>
+	</select>
+	<select id="getShopCommodyByCommodyId" resultType="com.pfq.deal.trans_listing.dto.ShopCommodyDto">
+		SELECT
+			shop_id,
+			commody_id,
+			show_time AS showTime,
+			show_flag,
+			picture_url,
+		  	shop_price,
+		  	updatetime
+		FROM
+		 	tb_shop_commody
+		 WHERE commody_id=#{commodyId}
+	</select>
+	<select id="getStyleCommodyRef" resultType="Long">
+		SELECT commody_id FROM tb_shop_style_commody WHERE 1=1
+		<if test="shopId!=null">
+		AND shop_id=#{shopId}
+		</if>
+		<if test="styleId!=null">
+			AND style_id=#{styleId}
+		</if>
 	</select>
 </mapper>

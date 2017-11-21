@@ -35,7 +35,7 @@ public interface IShopDao {
 
     int deleteStyleCommody(@Param("shopId")Integer shopId, @Param("styleId")Integer styleId, @Param("commodyId")Long commodyId);
 
-    boolean existCommodyInShop(@Param("commodyId") Long commodyId,@Param("shopId") Integer shopId);
+    int existCommodyInShop(@Param("commodyId") Long commodyId,@Param("shopId") Integer shopId);
 
     int saveShopCommody(ShopCommodyDto shopCommodyDto);
 
@@ -43,7 +43,7 @@ public interface IShopDao {
 
     void deleteTagRef(@Param("shopId") Integer shopId,@Param("commodyId") Long commodyId,@Param("tagId") Long tagId);
 
-    void updateCommodyInfo(@Param("shopId")Integer shopId, @Param("commodyId") Long commodyId, @Param("inputVo") InCreateShopCommodyVo inputVo);
+    void updateCommodyInfo(ShopCommodyDto inputVo);
 
     int deleteCommody(@Param("shopId")Integer shopId, @Param("commodyId")Long commodyId);
 
