@@ -19,5 +19,7 @@ public class InCreateVo implements IBaseInput{
 	private String commodyCode;
 
 	private Integer shopId;
+
+	private Integer styleId;
 	
 }

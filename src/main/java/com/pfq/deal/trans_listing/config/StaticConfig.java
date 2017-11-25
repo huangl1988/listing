@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class StaticConfig extends WebMvcConfigurerAdapter {
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/web/*")
-                .addResourceLocations("classpath:/web/");
+        registry.addResourceHandler("/web/**")
+                .addResourceLocations("classpath:/");
     }
 }

@@ -9,7 +9,7 @@
 			inserttime AS inserttime
 	</sql>
 	
-	<insert id="insert" parameterType="com.pfq.deal.trans_listing.dto.CommodyDTO">
+	<insert id="insert" keyProperty="id" parameterType="com.pfq.deal.trans_listing.dto.CommodyDTO">
 		INSERT INTO tb_commodity(
 		commodity_code,
 		<if test="shopId!=null">

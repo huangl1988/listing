@@ -28,13 +28,19 @@ public class CommodyService {
 	@Autowired
 	ShopService shopService;
 
-
+	@Transactional
 	public String create(InCreateVo inputVo) {
 
 		CommodyDTO dto = CommodyDTO.builder().commodyCode(inputVo.getCommodyCode())
 				.commodyName(inputVo.getCommodyName()).shopId(inputVo.getShopId()).build();
 
-		return commodyDao.insert(dto) + "";
+		 commodyDao.insert(dto);
+		 if(inputVo.getStyleId()!=null){
+			 List<Long> list= Arrays.asList();
+			 list.add(dto.getId());
+			 shopService.saveCommodyRelation(inputVo.getStyleId(),list,dto.getShopId());
+		 }
+		return "1";
 	}
 
 	public void update(InUpdateVo inputVo) {

@@ -38,7 +38,7 @@ public class ShopController {
 	}
 
 	@RequestMapping(value="/",method = RequestMethod.GET)
-	public ResponseEntity<BaseOutput> select(@PathVariable @IRegion Integer regionId){
+	public ResponseEntity<BaseOutput> select(@IRegion(regionId = "10")  Integer regionId){
 		RetShopInfoListVo retShopInoVo= RetShopInfoListVo.builder()
 				.shopInfoList(shopService.selectList(regionId == -1 ? null : regionId)).build();
 		retShopInoVo.doSucc();
