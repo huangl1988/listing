@@ -58,5 +58,13 @@ public class StyleCookingController {
         return ResponseEntity.ok(new BaseOutput());
     }
 
+    @RequestMapping(value = "/{shopId}",method = RequestMethod.GET)
+    public ResponseEntity<BaseOutput> selectList(@PathVariable Integer shopId){
+        var retStyleCookingsVo=RetStyleCookingsVo.builder().retList(styleCookingService.selectList(shopId)).build();
+        retStyleCookingsVo.doSucc();
+
+        return ResponseEntity.ok(new BaseOutput());
+    }
+
 }
 

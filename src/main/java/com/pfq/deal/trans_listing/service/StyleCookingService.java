@@ -25,6 +25,9 @@ public class StyleCookingService {
     @Autowired
     IStyleCookingDao styleCooking;
 
+    @Autowired
+    ShopService shopService;
+
     public void save(InCreateVo inCreateVo) {
 
         styleCooking.save(toDto(inCreateVo));
@@ -60,13 +63,24 @@ public class StyleCookingService {
         styleCooking.update(dto);
     }
 
-    public List<StyleCookingInfo> selectList() {
+    public List<StyleCookingInfo> selectList(Integer shopId) {
+        if
+
         var retList = new ArrayList<StyleCookingInfo>();
         Optional.ofNullable(styleCooking.selectList()).ifPresent(list -> {
             list.parallelStream().forEach(dto -> {
                 retList.add(toStyleCookingInfo(dto));
             });
         });
+        if(shopId!=null){
+            List<Integer> styleIds=shopService.getStyle(shopId);
+            return retList.parallelStream().filter(new Predicate<StyleCookingInfo>() {
+                @Override
+                public boolean test(StyleCookingInfo styleCookingInfo) {
+                    return styleIds.contains(styleCookingInfo.getId());
+                }
+            }).collect(Collectors.toList());
+        }
         return retList;
     }
 

@@ -241,4 +241,7 @@
 			AND style_id=#{styleId}
 		</if>
 	</select>
+	<select id="getStyle" parameterType="Integer" resultType="Integer">
+		SELECT style_id FROM  tb_shop_style WHERE  shop_id =#{id}
+	</select>
 </mapper>

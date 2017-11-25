@@ -233,4 +233,8 @@ public class ShopService {
         }).collect(Collectors.toList());
         return retVo;
     }
+
+    public List<Integer> getStyle(Integer shopId) {
+        return shopDao.getStyle(shopId);
+    }
 }
