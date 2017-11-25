@@ -82,8 +82,12 @@
 		SELECT	
 			<include refid="shop_details"/>
 		 FROM  tb_shop
-		 WHERE
-			1=1 AND region_id=#{regionId}
+		 <where>
+			1=1
+			<if test="regionId != null and regionId != ''">
+			AND region_id=#{regionId}
+			</if>
+		</where>
 	</select>
 	<insert id="saveStyleCommodyRelation">
 		INSERT INTO tb_shop_style_commody(
