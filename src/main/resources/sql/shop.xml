@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pfq.deal.trans_listing.dao.IShopDao">
-	
 	<sql id="shop_details">
 			shop_name AS shopName,
 			shop_code AS shopCode,
@@ -83,7 +82,10 @@
 			<include refid="shop_details"/>
 		 FROM  tb_shop
 		 WHERE
-			1=1 AND region_id=#{regionId}
+			1=1 
+		<if test="regionId != null">
+			AND region_id=#{regionId}
+		</if>
 	</select>
 	<insert id="saveStyleCommodyRelation">
 		INSERT INTO tb_shop_style_commody(
