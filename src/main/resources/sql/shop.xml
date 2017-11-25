@@ -14,7 +14,7 @@
 			inserttime  AS  inserttime
 	</sql>
 	
-	<insert id="insert" keyProperty="id" parameterType="com.pfq.deal.trans_listing.dto.ShopDto">
+	<insert id="save" keyProperty="id" parameterType="com.pfq.deal.trans_listing.dto.ShopDto">
 		INSERT INTO tb_shop(
 			shop_name,
 			shop_code,
