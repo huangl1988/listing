@@ -3,6 +3,7 @@
 <mapper namespace="com.pfq.deal.trans_listing.dao.IRegionDao">
 	
 	<sql id="region_details">
+			id,
 			region_name AS regionName,
 			city AS city,
 			updatetime AS updateTime
