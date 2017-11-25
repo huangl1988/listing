@@ -64,7 +64,6 @@ public class StyleCookingService {
     }
 
     public List<StyleCookingInfo> selectList(Integer shopId) {
-        if
 
         var retList = new ArrayList<StyleCookingInfo>();
         Optional.ofNullable(styleCooking.selectList()).ifPresent(list -> {

@@ -52,12 +52,16 @@ public class StyleCookingController {
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public ResponseEntity<BaseOutput> selectList(){
-        var retStyleCookingsVo=RetStyleCookingsVo.builder().retList(styleCookingService.selectList()).build();
+        var retStyleCookingsVo=RetStyleCookingsVo.builder().retList(styleCookingService.selectList(null)).build();
         retStyleCookingsVo.doSucc();
 
         return ResponseEntity.ok(new BaseOutput());
     }
-
+    /**
+     * 返回商店所有菜系
+     * @param shopId
+     * @return
+     */
     @RequestMapping(value = "/{shopId}",method = RequestMethod.GET)
     public ResponseEntity<BaseOutput> selectList(@PathVariable Integer shopId){
         var retStyleCookingsVo=RetStyleCookingsVo.builder().retList(styleCookingService.selectList(shopId)).build();

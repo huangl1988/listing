@@ -2,13 +2,20 @@ package com.pfq.deal.trans_listing.controller.admin;
 
 import java.sql.SQLException;
 
+import javax.mail.Header;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import com.alibaba.dubbo.remoting.exchange.Response;
 import com.pfq.deal.trans_listing.bean.input.region.InCreateVo;
 import com.pfq.deal.trans_listing.bean.output.BaseOutput;
 import com.pfq.deal.trans_listing.bean.output.IBaseOutput;
@@ -16,7 +23,9 @@ import com.pfq.deal.trans_listing.bean.output.region.RegionsOutput;
 import com.pfq.deal.trans_listing.exception.BusinessException;
 import com.pfq.deal.trans_listing.service.RegionService;
 
+import io.swagger.annotations.ResponseHeader;
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.swagger.readers.operation.ResponseHeaders;
 
 @RestController
 @RequestMapping("/sys/admin/regions")
