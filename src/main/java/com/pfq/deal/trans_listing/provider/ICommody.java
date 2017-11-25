@@ -7,7 +7,7 @@ public interface ICommody {
 
 	RetCommodyVo selectOne(Long id);
 
-	RetCommodyList selectList();
+	RetCommodyList selectList(Integer shopId);
 
 	
 

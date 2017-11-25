@@ -48,8 +48,8 @@ public class CommodyController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<RetCommodyList> selectList() {
-		RetCommodyList tRetCommodyList = commodyService.selectList();
+	public ResponseEntity<RetCommodyList> selectList(Integer shopId) {
+		RetCommodyList tRetCommodyList = commodyService.selectList(shopId);
 		tRetCommodyList.setCode("succ");
 		tRetCommodyList.setMsg("成功");
 		return ResponseEntity.status(HttpStatus.OK).body(tRetCommodyList);

@@ -16,7 +16,7 @@ public class DealExceptionForGernal{
 	@ExceptionHandler(value={BusinessException.class})
 	public ResponseEntity<IBaseOutput> errorReturn(final BusinessException ex, final WebRequest req){
 		
-		return ResponseEntity.status(HttpStatus.OK_200).body(new BaseOutput("fail", ex.getMessage()));
+		return ResponseEntity.status(HttpStatus.OK_200).body(new BaseOutput());
 	}
 	
 	

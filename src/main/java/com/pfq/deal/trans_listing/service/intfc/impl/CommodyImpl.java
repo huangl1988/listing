@@ -21,6 +21,6 @@ public class CommodyImpl implements ConstraintValidator<ICommody,Long> {
     public boolean isValid(Long id, ConstraintValidatorContext constraintValidatorContext) {
         CommodyService commodyService= SpringContextUtils.getBean(CommodyService.class);
 
-        return commodyService.findById(id).getCommodyName()==null;
+        return commodyService.findById(id).getCommodyInfo()==null;
     }
 }

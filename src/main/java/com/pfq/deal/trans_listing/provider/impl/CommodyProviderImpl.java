@@ -21,9 +21,9 @@ public class CommodyProviderImpl implements ICommody {
 	}
 
 	@Override
-	public RetCommodyList selectList() {
+	public RetCommodyList selectList(Integer shopId) {
 
-		return commodyServoce.selectList();
+		return commodyServoce.selectList(shopId);
 	}
 
 }
