@@ -9,6 +9,7 @@ public class BaseOutput implements IBaseOutput {
 
 	
 	public BaseOutput(){
+
 		this.doSucc();
 	}
 	
@@ -28,7 +29,7 @@ public class BaseOutput implements IBaseOutput {
 	
 	public void doError(String msg){
 		code="error";
-		msg=msg;
+		this.msg=msg;
 	}
 	
 }

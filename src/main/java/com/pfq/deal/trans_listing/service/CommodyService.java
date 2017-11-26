@@ -21,7 +21,7 @@ import com.pfq.deal.trans_listing.util.DateUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CommodyService {
+public class CommodyService implements IBaseService{
 
 	@Autowired
 	ICommodyDao commodyDao;
@@ -101,4 +101,8 @@ public class CommodyService {
 		return temp;
 	}
 
+	@Override
+	public boolean isExist(String id) {
+		return this.findById(Long.parseLong(id)).getCommodyInfo()!=null;
+	}
 }

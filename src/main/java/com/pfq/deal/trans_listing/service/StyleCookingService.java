@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * Created by steven on 2017/11/17.
  */
 @Service
-public class StyleCookingService {
+public class StyleCookingService implements IBaseService{
 
     @Autowired
     IStyleCookingDao styleCooking;
@@ -84,4 +84,8 @@ public class StyleCookingService {
     }
 
 
+    @Override
+    public boolean isExist(String id) {
+        return this.select(Integer.parseInt(id)).getStyleName()!=null;
+    }
 }

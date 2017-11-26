@@ -15,7 +15,7 @@ import com.pfq.deal.trans_listing.dto.RegionDto;
 import com.pfq.deal.trans_listing.exception.BusinessException;
 
 @Service
-public class RegionService {
+public class RegionService implements IBaseService{
 	
 	@Autowired
 	IRegionDao regionDao;
@@ -75,4 +75,9 @@ public class RegionService {
 		retInfo.setList(retList);
 		return retInfo;
     }
+
+	@Override
+	public boolean isExist(String id) {
+		return this.select(Integer.parseInt(id)).getRegionName()!=null;
+	}
 }

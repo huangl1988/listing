@@ -4,7 +4,9 @@ import com.pfq.deal.trans_listing.bean.input.stylecooking.InCreateVo;
 import com.pfq.deal.trans_listing.bean.output.BaseOutput;
 import com.pfq.deal.trans_listing.bean.output.stylecooking.RetStyleCookingVo;
 import com.pfq.deal.trans_listing.bean.output.stylecooking.RetStyleCookingsVo;
+import com.pfq.deal.trans_listing.service.ShopService;
 import com.pfq.deal.trans_listing.service.StyleCookingService;
+import com.pfq.deal.trans_listing.service.intfc.MyPathavalibe;
 import lombok.experimental.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +65,7 @@ public class StyleCookingController {
      * @return
      */
     @RequestMapping(value = "/{shopId}",method = RequestMethod.GET)
-    public ResponseEntity<BaseOutput> selectList(@PathVariable Integer shopId){
+    public ResponseEntity<BaseOutput> selectList(@MyPathavalibe(clz = ShopService.class) Integer shopId){
         var retStyleCookingsVo=RetStyleCookingsVo.builder().retList(styleCookingService.selectList(shopId)).build();
         retStyleCookingsVo.doSucc();
 

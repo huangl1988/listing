@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by steven on 2017/11/16.
  */
 @Service
-public class ShopService {
+public class ShopService implements IBaseService{
 
     @Autowired
     IShopDao shopDao;
@@ -236,5 +236,10 @@ public class ShopService {
 
     public List<Integer> getStyle(Integer shopId) {
         return shopDao.getStyle(shopId);
+    }
+
+    @Override
+    public boolean isExist(String id) {
+        return this.selectOne(Integer.parseInt(id)).getShopName()!=null;
     }
 }
