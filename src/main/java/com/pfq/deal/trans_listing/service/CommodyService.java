@@ -71,7 +71,7 @@ public class CommodyService implements IBaseService{
 	private CommodyInfoVo toCommodyInfo(CommodyDTO dto){
 		if(dto==null)
 			return null;
-		ShopCommodyDto shopCommodyDto=shopService.getShopCommodyByCommodyId(dto.getId());
+		ShopCommodyDto shopCommodyDto=Optional.ofNullable(shopService.getShopCommodyByCommodyId(dto.getId())).orElse(ShopCommodyDto.builder().build());
 		List<TagDto> tagsList= shopService.getTagList(dto.getId());
 		List<TagInfo> tags = Arrays.asList();
 		Optional.ofNullable(tagsList).ifPresent(list->{list.parallelStream().forEach(tagDto -> {

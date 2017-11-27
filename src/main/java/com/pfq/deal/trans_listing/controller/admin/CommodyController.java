@@ -47,7 +47,7 @@ public class CommodyController {
 		return ResponseEntity.status(HttpStatus.OK).body(tRetCommodyVo);
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "",method = RequestMethod.GET)
 	public ResponseEntity<RetCommodyList> selectList(Integer shopId) {
 		RetCommodyList tRetCommodyList = commodyService.selectList(shopId);
 		tRetCommodyList.setCode("succ");

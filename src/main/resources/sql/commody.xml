@@ -3,6 +3,7 @@
 <mapper namespace="com.pfq.deal.trans_listing.dao.ICommodyDao">
 	
 	<sql id="commodity_details">
+			id,
 			commodity_code AS commodyCode,
 			commoditiy_name AS commodyName,
 			shop_id AS shopId,
