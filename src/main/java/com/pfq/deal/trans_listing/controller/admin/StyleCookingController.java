@@ -57,7 +57,7 @@ public class StyleCookingController {
         var retStyleCookingsVo=RetStyleCookingsVo.builder().retList(styleCookingService.selectList(null)).build();
         retStyleCookingsVo.doSucc();
 
-        return ResponseEntity.ok(new BaseOutput());
+        return ResponseEntity.ok(retStyleCookingsVo);
     }
     /**
      * 返回商店所有菜系
@@ -69,7 +69,7 @@ public class StyleCookingController {
         var retStyleCookingsVo=RetStyleCookingsVo.builder().retList(styleCookingService.selectList(shopId)).build();
         retStyleCookingsVo.doSucc();
 
-        return ResponseEntity.ok(new BaseOutput());
+        return ResponseEntity.ok(retStyleCookingsVo);
     }
 
 }
