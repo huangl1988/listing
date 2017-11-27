@@ -32,7 +32,8 @@ public class CommodyService implements IBaseService{
 	public String create(InCreateVo inputVo) {
 
 		CommodyDTO dto = CommodyDTO.builder().commodyCode(inputVo.getCommodyCode())
-				.commodyName(inputVo.getCommodyName()).shopId(inputVo.getShopId()).build();
+				.commodyName(inputVo.getCommodyName()).shopId(inputVo.getShopId())
+				.styleId(inputVo.getStyleId()).build();
 
 		 commodyDao.insert(dto);
 		 if(inputVo.getStyleId()!=null){
