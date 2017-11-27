@@ -206,7 +206,7 @@ public class ShopService implements IBaseService{
     public List<TagDto> getTagList(Long commodyId) {
 
          List<Long> tagIds = shopDao.getTagRef(commodyId,null);
-         List<TagDto> tagDtoList=Arrays.asList();
+         List<TagDto> tagDtoList=new ArrayList<>();
          Optional.ofNullable(tagIds).ifPresent(list->{
              list.parallelStream().forEach(tagId->{
                  tagDtoList.add(tagService.findTagById(tagId));
