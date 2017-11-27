@@ -3,8 +3,10 @@
 <mapper namespace="com.pfq.deal.trans_listing.dao.IStyleCookingDao">
 
     <sql id="stylecooking_details">
+    	id,
         style_name AS styleName,
-        inserttime AS inserttime
+        inserttime AS inserttime,
+        updatetime AS updatetime
     </sql>
 
     <insert id="save" parameterType="com.pfq.deal.trans_listing.dto.StyleCookingDto">
