@@ -52,7 +52,7 @@
 	SELECT
 		1
 	FROM
-		tb_commody_shop WHERE tb_commody_shop.commody_id = tb_commodity.id
+		tb_shop_commody WHERE tb_shop_commody.commody_id = tb_commodity.id
 	)
 	</delete>
 	
