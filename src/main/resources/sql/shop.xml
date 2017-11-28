@@ -158,7 +158,7 @@
 			show_flag,
 			picture_url,
 		  	shop_price
-		)VALUES (#{shop_id},#{commody_id},#{showTime},#{show_flag},#{picture_url},#{show_price})
+		)VALUES (#{shop_id},#{commody_id},#{showTime},#{show_flag},#{picture_url},#{shop_price})
 	</insert>
 	<insert id="saveTagCommodyRef">
 		INSERT INTO tb_shop_commody_tag(
@@ -195,10 +195,10 @@
 			<if test="picture_url!=null">
 				picture_url=#{picture_url},
 			</if>
-			<if test="show_price!=null">
-				show_price=#{show_price},
+			<if test="shop_price!=null">
+				shop_price=#{shop_price},
 			</if>
-			updatetime=now(),
+			updatetime=now()
 		WHERE shop_id=#{shop_id} AND commody_id=#{commody_id}
 	</update>
 	<delete id="deleteCommody">

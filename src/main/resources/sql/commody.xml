@@ -16,10 +16,10 @@
 		<if test="shopId!=null">
 			shop_id,
 		</if>
-		commoditiy_name
 		<if test="styleId!=null">
-			style_id
+			style_id,
 		</if>
+		commoditiy_name		
 		)
 		VALUES(
 		#{commodyCode},
