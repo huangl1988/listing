@@ -1,5 +1,6 @@
 package com.pfq.deal.trans_listing.bean.output.commody;
 
+import com.pfq.deal.trans_listing.bean.output.stylecooking.StyleCookingInfo;
 import com.pfq.deal.trans_listing.bean.output.tag.TagInfo;
 import lombok.*;
 
@@ -25,4 +26,5 @@ public class CommodyInfoVo {
     private String commodyCode;
     private Integer isSelect;
     private List<TagInfo> tags;
+    private List<StyleCookingInfo> styleNames;
 }

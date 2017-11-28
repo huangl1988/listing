@@ -15,6 +15,7 @@ import com.pfq.deal.trans_listing.bean.input.commody.InCreateVo;
 import com.pfq.deal.trans_listing.bean.input.commody.InUpdateVo;
 import com.pfq.deal.trans_listing.bean.output.commody.RetCommodyList;
 import com.pfq.deal.trans_listing.bean.output.commody.RetCommodyVo;
+import com.pfq.deal.trans_listing.bean.output.stylecooking.StyleCookingInfo;
 import com.pfq.deal.trans_listing.dao.ICommodyDao;
 import com.pfq.deal.trans_listing.dto.CommodyDTO;
 import com.pfq.deal.trans_listing.util.DateUtils;
@@ -27,7 +28,10 @@ public class CommodyService implements IBaseService{
 	ICommodyDao commodyDao;
 	@Autowired
 	ShopService shopService;
-
+	@Autowired
+	StyleCookingService styleCookingService;
+	
+	
 	@Transactional
 	public String create(InCreateVo inputVo) {
 
@@ -75,6 +79,10 @@ public class CommodyService implements IBaseService{
 		ShopCommodyDto shopCommodyDto=Optional.ofNullable(shopService.getShopCommodyByCommodyId(dto.getId())).orElse(ShopCommodyDto.builder().build());
 		List<TagDto> tagsList= shopService.getTagList(dto.getId());
 		List<TagInfo> tags = new ArrayList<>();
+		
+		List<StyleCookingInfo> stylesInfo=styleCookingService.selectList(dto.getShopId());
+		List<>
+		List<StyleCookingInfo> styles=new ArrayList<>();
 		Optional.ofNullable(tagsList).ifPresent(list->{list.parallelStream().forEach(tagDto -> {
 			 tags.add(TagInfo.builder().id(tagDto.getId()).tagName(tagDto.getTagName()).build());
 		});});
