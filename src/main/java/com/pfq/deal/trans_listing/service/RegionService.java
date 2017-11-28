@@ -15,7 +15,7 @@ import com.pfq.deal.trans_listing.dto.RegionDto;
 import com.pfq.deal.trans_listing.exception.BusinessException;
 
 @Service
-public class RegionService implements IBaseService{
+public class RegionService extends IBaseService{
 	
 	@Autowired
 	IRegionDao regionDao;

@@ -54,4 +54,6 @@ public interface IShopDao {
     List<Long> getStyleCommodyRef(@Param("shopId")Integer shopId, @Param("styleId") Integer styleId);
 
     List<Integer> getStyle(Integer shopId);
+
+	List<Integer> getCommodyStylesByCommodyListList(@Param("id")Long shopId);
 }

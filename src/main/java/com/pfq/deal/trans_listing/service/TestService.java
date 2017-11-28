@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * Created by steven on 2017/11/26.
  */
 @Service
-public class TestService implements IBaseService {
+public class TestService extends IBaseService {
     @Override
     public boolean isExist(String id) {
         System.out.println(id+"service");

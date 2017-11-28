@@ -25,7 +25,7 @@ public class CommodyController {
 	@Autowired
 	CommodyService commodyService;
 
-	@RequestMapping(value = "/commody/", method = RequestMethod.POST)
+	@RequestMapping(value = "/commody/", method = RequestMethod.GET)
 	@ExceptionHandler
 	public ResponseEntity<IBaseOutput> create(InCreateVo inputVo) {
 		RetCreateVo vo = RetCreateVo.builder().id(commodyService.create(inputVo)).build();

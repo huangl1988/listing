@@ -1,7 +1,9 @@
 package com.pfq.deal.trans_listing.service;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.pfq.deal.trans_listing.bean.output.commody.CommodyInfoVo;
 import com.pfq.deal.trans_listing.bean.output.tag.TagInfo;
@@ -15,20 +17,26 @@ import com.pfq.deal.trans_listing.bean.input.commody.InCreateVo;
 import com.pfq.deal.trans_listing.bean.input.commody.InUpdateVo;
 import com.pfq.deal.trans_listing.bean.output.commody.RetCommodyList;
 import com.pfq.deal.trans_listing.bean.output.commody.RetCommodyVo;
+import com.pfq.deal.trans_listing.bean.output.stylecooking.StyleCookingInfo;
 import com.pfq.deal.trans_listing.dao.ICommodyDao;
 import com.pfq.deal.trans_listing.dto.CommodyDTO;
 import com.pfq.deal.trans_listing.util.DateUtils;
+
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CommodyService implements IBaseService{
+public class CommodyService extends IBaseService{
 
 	@Autowired
 	ICommodyDao commodyDao;
 	@Autowired
 	ShopService shopService;
-
-	@Transactional
+	@Autowired
+	StyleCookingService styleCookingService;
+	
+	
+	@Transactional(propagation=Propagation.REQUIRED)
 	public String create(InCreateVo inputVo) {
 
 		CommodyDTO dto = CommodyDTO.builder().commodyCode(inputVo.getCommodyCode())
@@ -42,7 +50,8 @@ public class CommodyService implements IBaseService{
 			 list.add(dto.getId());
 			 shopService.saveCommodyRelation(inputVo.getStyleId(),list,dto.getShopId());
 		 }
-		return "1";
+		 
+		return ""+dto.getId();
 	}
 
 	public void update(InUpdateVo inputVo) {
@@ -76,6 +85,21 @@ public class CommodyService implements IBaseService{
 		ShopCommodyDto shopCommodyDto=Optional.ofNullable(shopService.getShopCommodyByCommodyId(dto.getId())).orElse(ShopCommodyDto.builder().build());
 		List<TagDto> tagsList= shopService.getTagList(dto.getId());
 		List<TagInfo> tags = new ArrayList<>();
+		
+		List<StyleCookingInfo> stylesInfo=Optional.ofNullable(styleCookingService.selectList(dto.getShopId())).orElse(new ArrayList<>());
+		List<Integer> styleIds=shopService.getCommodyStylesByCommodyListList(dto.getId());
+		List<StyleCookingInfo> isSelectStyle= new ArrayList<>();
+		Optional.ofNullable(styleIds).ifPresent(list->{
+			stylesInfo.parallelStream().filter(new Predicate<StyleCookingInfo>() {
+				@Override
+				public boolean test(StyleCookingInfo t) {
+					
+					return styleIds.contains(t.getId());
+				}
+			}).collect(Collectors.toList()).forEach(styleInfo->{
+				isSelectStyle.add(styleInfo);
+			});
+		});
 		Optional.ofNullable(tagsList).ifPresent(list->{list.parallelStream().forEach(tagDto -> {
 			 tags.add(TagInfo.builder().id(tagDto.getId()).tagName(tagDto.getTagName()).build());
 		});});
@@ -89,7 +113,8 @@ public class CommodyService implements IBaseService{
 				.shop_price(shopCommodyDto.getShop_price())
 				.show_flag(shopCommodyDto.getShow_flag())
 				.showTime(DateUtils.getDateString(shopCommodyDto.getShowTime()))
-				.tags(tags).build();
+				.tags(tags)
+				.styleNames(isSelectStyle).build();
 	}
 
 	public RetCommodyList selectList(Integer shopId) {
