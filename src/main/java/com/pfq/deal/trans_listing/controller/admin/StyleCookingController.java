@@ -64,13 +64,12 @@ public class StyleCookingController {
      * @param shopId
      * @return
      */
-    @RequestMapping(value = "/{shopId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/getStyleByShopId/{shopId}",method = RequestMethod.GET)
     public ResponseEntity<BaseOutput> selectList(@MyPathavalibe(clz = ShopService.class) Integer shopId){
         var retStyleCookingsVo=RetStyleCookingsVo.builder().retList(styleCookingService.selectList(shopId)).build();
         retStyleCookingsVo.doSucc();
 
         return ResponseEntity.ok(retStyleCookingsVo);
     }
-
 }
 

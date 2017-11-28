@@ -1,6 +1,7 @@
 package com.pfq.deal.trans_listing.service;
 
 import com.pfq.deal.trans_listing.bean.input.stylecooking.InCreateVo;
+import com.pfq.deal.trans_listing.bean.output.commody.CommodyInfoVo;
 import com.pfq.deal.trans_listing.bean.output.stylecooking.StyleCookingInfo;
 import com.pfq.deal.trans_listing.dao.ICommodyDao;
 import com.pfq.deal.trans_listing.dao.IStyleCookingDao;
@@ -82,7 +83,6 @@ public class StyleCookingService implements IBaseService{
         }
         return retList;
     }
-
 
     @Override
     public boolean isExist(String id) {
