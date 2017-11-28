@@ -10,6 +10,7 @@ import com.pfq.deal.trans_listing.util.DateUtils;
 import lombok.experimental.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +53,11 @@ public class StyleCookingService extends IBaseService{
                 .styleName(dto.getStyleName())
                 .updatetime(DateUtils.getDateString(dto.getUpdatetime())).build();
     }
-
+    @Transactional
     public void delete(Integer id) {
-
+    	shopService.deleteStyle(null, id);
         styleCooking.delete(id);
+        
     }
 
     public void update(Integer id, InCreateVo inputVo) {

@@ -87,7 +87,7 @@ public class CommodyService extends IBaseService{
 		List<TagInfo> tags = new ArrayList<>();
 		
 		List<StyleCookingInfo> stylesInfo=Optional.ofNullable(styleCookingService.selectList(dto.getShopId())).orElse(new ArrayList<>());
-		List<Integer> styleIds=shopService.getCommodyStylesByCommodyListList(dto.getId());
+		List<Integer> styleIds=Optional.ofNullable(shopService.getCommodyStylesByCommodyListList(dto.getId())).orElse(new ArrayList<>());
 		List<StyleCookingInfo> isSelectStyle= new ArrayList<>();
 		Optional.ofNullable(styleIds).ifPresent(list->{
 			stylesInfo.parallelStream().filter(new Predicate<StyleCookingInfo>() {
