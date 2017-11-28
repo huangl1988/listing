@@ -36,7 +36,8 @@ public class CommodyService implements IBaseService{
 
 		 commodyDao.insert(dto);
 		 if(inputVo.getStyleId()!=null){
-			 List<Long> list= Arrays.asList();
+			 Arrays.asList();
+			 List<Long> list= new ArrayList<>();
 			 list.add(dto.getId());
 			 shopService.saveCommodyRelation(inputVo.getStyleId(),list,dto.getShopId());
 		 }
@@ -73,7 +74,7 @@ public class CommodyService implements IBaseService{
 			return null;
 		ShopCommodyDto shopCommodyDto=Optional.ofNullable(shopService.getShopCommodyByCommodyId(dto.getId())).orElse(ShopCommodyDto.builder().build());
 		List<TagDto> tagsList= shopService.getTagList(dto.getId());
-		List<TagInfo> tags = Arrays.asList();
+		List<TagInfo> tags = new ArrayList<>();
 		Optional.ofNullable(tagsList).ifPresent(list->{list.parallelStream().forEach(tagDto -> {
 			 tags.add(TagInfo.builder().id(tagDto.getId()).tagName(tagDto.getTagName()).build());
 		});});
