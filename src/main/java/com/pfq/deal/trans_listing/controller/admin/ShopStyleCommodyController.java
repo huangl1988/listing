@@ -56,9 +56,8 @@ public class ShopStyleCommodyController {
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public ResponseEntity<IBaseOutput> getAll(@MyPathavalibe(clz = StyleCookingService.class) Integer styleId, @MyPathavalibe(clz = ShopService.class) Integer shopId){
-
         var RetCommodyListVo=shopService.getStyleCommodyList(shopId,styleId);
-        return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
+        return ResponseEntity.status(HttpStatus.OK).body(RetCommodyListVo);
     }
 
 }

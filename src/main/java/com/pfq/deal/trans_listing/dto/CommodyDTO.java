@@ -25,4 +25,6 @@ public class CommodyDTO{
 
 	private Integer shopId;
 	
+	private Integer styleId;
+	
 }
