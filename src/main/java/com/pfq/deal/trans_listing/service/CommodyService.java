@@ -21,10 +21,12 @@ import com.pfq.deal.trans_listing.bean.output.stylecooking.StyleCookingInfo;
 import com.pfq.deal.trans_listing.dao.ICommodyDao;
 import com.pfq.deal.trans_listing.dto.CommodyDTO;
 import com.pfq.deal.trans_listing.util.DateUtils;
+
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CommodyService implements IBaseService{
+public class CommodyService extends IBaseService{
 
 	@Autowired
 	ICommodyDao commodyDao;
@@ -34,7 +36,7 @@ public class CommodyService implements IBaseService{
 	StyleCookingService styleCookingService;
 	
 	
-	@Transactional
+	@Transactional(propagation=Propagation.REQUIRED)
 	public String create(InCreateVo inputVo) {
 
 		CommodyDTO dto = CommodyDTO.builder().commodyCode(inputVo.getCommodyCode())
@@ -48,7 +50,8 @@ public class CommodyService implements IBaseService{
 			 list.add(dto.getId());
 			 shopService.saveCommodyRelation(inputVo.getStyleId(),list,dto.getShopId());
 		 }
-		return "1";
+		 
+		return ""+dto.getId();
 	}
 
 	public void update(InUpdateVo inputVo) {

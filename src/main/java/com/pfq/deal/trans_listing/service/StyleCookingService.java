@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * Created by steven on 2017/11/17.
  */
 @Service
-public class StyleCookingService implements IBaseService{
+public class StyleCookingService extends IBaseService{
 
     @Autowired
     IStyleCookingDao styleCooking;

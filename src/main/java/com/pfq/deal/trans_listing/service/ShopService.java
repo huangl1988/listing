@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by steven on 2017/11/16.
  */
 @Service
-public class ShopService implements IBaseService{
+public class ShopService extends IBaseService{
 
     @Autowired
     IShopDao shopDao;
