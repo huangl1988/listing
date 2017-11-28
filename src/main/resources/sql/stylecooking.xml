@@ -35,7 +35,7 @@
         SELECT
         1
         FROM
-        tb_shop_style_commdoy WHERE tb_stylecooking.id = tb_shop_stylecooking_commdoy.style_id
+        tb_shop_style_commody WHERE tb_stylecooking.id = tb_shop_style_commody.style_id
         )
     </delete>
 
