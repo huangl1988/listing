@@ -71,6 +71,5 @@ public class StyleCookingController {
 
         return ResponseEntity.ok(retStyleCookingsVo);
     }
-
 }
 

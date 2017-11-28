@@ -235,7 +235,7 @@
 	<select id="getStyleCommodyRef" resultType="Long">
 		SELECT commody_id FROM tb_shop_style_commody WHERE 1=1
 		<if test="shopId!=null">
-		AND shop_id=#{shopId}
+			AND shop_id=#{shopId}
 		</if>
 		<if test="styleId!=null">
 			AND style_id=#{styleId}
