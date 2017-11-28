@@ -241,6 +241,11 @@
 			AND style_id=#{styleId}
 		</if>
 	</select>
+	
+	<select id="getCommodyStylesByCommodyListList" resultType="Integer">
+		SELECT style_id FROM tb_shop_style_commody WHERE 1=1 AND commody_id=#{id}
+	</select>
+	
 	<select id="getStyle" parameterType="Integer" resultType="Integer">
 		SELECT style_id FROM  tb_shop_style WHERE  shop_id =#{id}
 	</select>

@@ -242,4 +242,9 @@ public class ShopService implements IBaseService{
     public boolean isExist(String id) {
         return this.selectOne(Integer.parseInt(id)).getShopName()!=null;
     }
+
+	public List<Integer> getCommodyStylesByCommodyListList(Long id) {
+		
+		return shopDao.getCommodyStylesByCommodyListList(id);
+	}
 }
