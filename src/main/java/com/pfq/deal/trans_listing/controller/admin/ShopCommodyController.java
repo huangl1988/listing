@@ -75,5 +75,19 @@ public class ShopCommodyController {
         var outPutInfo=shopService.findCommody(commodyId);
         return ResponseEntity.status(HttpStatus.OK).body(outPutInfo);
     }
+    
+    @RequestMapping(value = "/{commodyId}/up",method = RequestMethod.POST)
+    public ResponseEntity<BaseOutput> showTo(@MyPathavalibe(clz = ShopService.class) Integer shopId, @MyPathavalibe(clz = CommodyService.class) Long commodyId){
 
+        shopService.commodyUp(commodyId,shopId);
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
+    }
+    
+    @RequestMapping(value = "/{commodyId}/down",method = RequestMethod.POST)
+    public ResponseEntity<BaseOutput> down(@MyPathavalibe(clz = ShopService.class) Integer shopId, @MyPathavalibe(clz = CommodyService.class) Long commodyId){
+
+        shopService.commodyDown(commodyId,shopId);
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
+    }
+    
 }

@@ -59,6 +59,20 @@ public class ShopController {
 		return ResponseEntity.ok(new BaseOutput());
 	}
 	
+	@RequestMapping(value="/{id}/up",method=RequestMethod.POST)
+	public ResponseEntity<BaseOutput> up(@PathVariable Integer id, @PathVariable Integer regionId){
+		
+
+		shopService.up(id);
+		return ResponseEntity.ok(new BaseOutput());
+	}
 	
+	@RequestMapping(value="/{id}/down",method=RequestMethod.POST)
+	public ResponseEntity<BaseOutput> down(@PathVariable Integer id, @PathVariable Integer regionId, InCreateVo inputVo){
+		inputVo.setRegionId(regionId);
+
+		shopService.down(id);
+		return ResponseEntity.ok(new BaseOutput());
+	}
 	
 }

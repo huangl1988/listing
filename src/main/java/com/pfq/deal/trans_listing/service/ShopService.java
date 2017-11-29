@@ -247,4 +247,21 @@ public class ShopService extends IBaseService{
 		
 		return shopDao.getCommodyStylesByCommodyListList(id);
 	}
+
+	public void commodyUp(Long commodyId, Integer shopId) {
+		shopDao.commodyUp(commodyId);
+	}
+
+	public void commodyDown(Long commodyId, Integer shopId) {
+		shopDao.commodyDown(commodyId,null);
+	}
+	
+	public void up(Integer shopId){
+		shopDao.up(shopId);
+	}
+	@Transactional
+	public void down(Integer shopId) {
+		shopDao.commodyDown(null,shopId);
+		shopDao.down(shopId);
+	}
 }
