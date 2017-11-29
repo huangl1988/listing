@@ -75,7 +75,7 @@ public class StyleCookingService extends IBaseService{
             });
         });
         if(shopId!=null){
-            List<Integer> styleIds=shopService.getStyle(shopId);
+            List<Integer> styleIds=Optional.ofNullable(shopService.getStyle(shopId)).orElse(new ArrayList<>());
             return retList.parallelStream().filter(new Predicate<StyleCookingInfo>() {
                 @Override
                 public boolean test(StyleCookingInfo styleCookingInfo) {
