@@ -70,15 +70,17 @@ public class StyleCookingService extends IBaseService{
 
         var retList = new ArrayList<StyleCookingInfo>();
         Optional.ofNullable(styleCooking.selectList()).ifPresent(list -> {
-            list.parallelStream().forEach(dto -> {
+            list.forEach(dto -> {
                 retList.add(toStyleCookingInfo(dto));
             });
         });
         if(shopId!=null){
             List<Integer> styleIds=Optional.ofNullable(shopService.getStyle(shopId)).orElse(new ArrayList<>());
-            return retList.parallelStream().filter(new Predicate<StyleCookingInfo>() {
+            return retList.stream().filter(new Predicate<StyleCookingInfo>() {
                 @Override
                 public boolean test(StyleCookingInfo styleCookingInfo) {
+                	if(styleCookingInfo==null)
+                		return false;
                     return styleIds.contains(styleCookingInfo.getId());
                 }
             }).collect(Collectors.toList());

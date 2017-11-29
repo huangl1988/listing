@@ -98,7 +98,7 @@ public class ShopService extends IBaseService{
     public void saveCommodyRelation(Integer styleId, List<Long> commodyIdList, Integer shopId) {
 
         Optional.ofNullable(commodyIdList).ifPresent(list -> {
-            list.parallelStream().filter(new Predicate<Long>() {
+            list.stream().filter(new Predicate<Long>() {
                 @Override
                 public boolean test(Long id) {
                     return commodyService.findById(id).getCommodyInfo() == null;
@@ -206,7 +206,7 @@ public class ShopService extends IBaseService{
          List<Long> tagIds = shopDao.getTagRef(commodyId,null);
          List<TagDto> tagDtoList=new ArrayList<>();
          Optional.ofNullable(tagIds).ifPresent(list->{
-             list.parallelStream().forEach(tagId->{
+             list.stream().forEach(tagId->{
                  tagDtoList.add(tagService.findTagById(tagId));
              });
          });
@@ -223,7 +223,7 @@ public class ShopService extends IBaseService{
         List<Long> commodys=shopDao.getStyleCommodyRef(shopId,styleId);
 
         RetCommodyList retVo=this.getAll(shopId);
-        retVo.getRetList().parallelStream().filter(new Predicate<CommodyInfoVo>() {
+        retVo.getRetList().stream().filter(new Predicate<CommodyInfoVo>() {
             @Override
             public boolean test(CommodyInfoVo infoVo) {
                 return commodys.contains(infoVo.getCommody_id());
