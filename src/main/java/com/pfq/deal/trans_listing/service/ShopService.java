@@ -127,9 +127,7 @@ public class ShopService extends IBaseService{
             throw new BusinessException("style not exist!");
         }
 
-        if(deleteStyleCommody(shopId,styleId,null)>1){
-            throw new BusinessException(" style cooking is not empty!");
-        }
+        deleteStyleCommody(shopId,styleId,null);
 
         shopDao.deleteStyle(shopId,styleId);
 

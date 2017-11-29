@@ -1,9 +1,12 @@
 package com.pfq.deal.trans_listing.bean.input.stylecooking;
 
 import com.pfq.deal.trans_listing.bean.input.IBaseInput;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,6 +17,8 @@ import java.util.List;
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 public class InStyleCommodyRelationVo implements IBaseInput {
     //@RequestBody
     private List<Long> commodyList;

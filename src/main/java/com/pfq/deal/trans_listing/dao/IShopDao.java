@@ -31,7 +31,7 @@ public interface IShopDao {
 
     int selectStyleExist(@Param("styleId") Integer styleId, @Param("shopId")Integer shopId);
 
-    int deleteStyle(Integer shopId, Integer styleId);
+    int deleteStyle( @Param("shopId")Integer shopId , @Param("styleId") Integer styleId);
 
     int deleteStyleCommody(@Param("shopId")Integer shopId, @Param("styleId")Integer styleId, @Param("commodyId")Long commodyId);
 
