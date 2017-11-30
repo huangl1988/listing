@@ -223,12 +223,13 @@ public class ShopService extends IBaseService{
         List<Long> commodys=shopDao.getStyleCommodyRef(shopId,styleId);
 
         RetCommodyList retVo=this.getAll(shopId);
-        retVo.getRetList().stream().filter(new Predicate<CommodyInfoVo>() {
+        List<CommodyInfoVo> list=retVo.getRetList().stream().filter(new Predicate<CommodyInfoVo>() {
             @Override
             public boolean test(CommodyInfoVo infoVo) {
                 return commodys.contains(infoVo.getCommody_id());
             }
         }).collect(Collectors.toList());
+        retVo.setRetList(list);
         return retVo;
     }
 
