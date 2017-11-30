@@ -220,7 +220,7 @@ public class ShopService extends IBaseService{
 
     public RetCommodyList getStyleCommodyList(Integer shopId, Integer styleId) {
 
-        List<Long> commodys=shopDao.getStyleCommodyRef(shopId,styleId);
+        List<Long> commodys=Optional.ofNullable(shopDao.getStyleCommodyRef(shopId,styleId)).orElse(new ArrayList<Long>());
 
         RetCommodyList retVo=this.getAll(shopId);
         List<CommodyInfoVo> list=retVo.getRetList().stream().filter(new Predicate<CommodyInfoVo>() {
