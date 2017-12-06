@@ -50,7 +50,7 @@ public class OrderService extends IBaseService{
             totalDTO.setOrderNo(orderNo);
         orderDao.save(totalDTO);
         inputVo.getOrderList().stream().forEach(detail->{
-            OrderDetailsInfoDTO detailsInfoDTO=toDetailsDTO(detail,totalDTO.getOrderNo(),totalDTO.getSiteNo(),totalDTO.getId())
+            OrderDetailsInfoDTO detailsInfoDTO=toDetailsDTO(detail,totalDTO.getOrderNo(),totalDTO.getSiteNo(),totalDTO.getId());
             orderDao.saveDetails(detailsInfoDTO);
         });
     }
