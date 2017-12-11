@@ -1,19 +1,20 @@
 package com.pfq.deal.trans_listing.service;
 
-import com.pfq.deal.trans_listing.bean.input.order.CeculatorOrderInfo;
-import com.pfq.deal.trans_listing.bean.input.order.InputOrder;
-import com.pfq.deal.trans_listing.bean.input.order.OrderInfo;
-import com.pfq.deal.trans_listing.bean.input.order.UpdateOrder;
+import com.pfq.deal.trans_listing.bean.input.order.*;
 import com.pfq.deal.trans_listing.bean.output.Order.OrderDetailsInfo;
 import com.pfq.deal.trans_listing.bean.output.Order.OrderTotalInfo;
 import com.pfq.deal.trans_listing.bean.output.Order.PayOrderRes;
 import com.pfq.deal.trans_listing.bean.output.Order.RetOrderInfo;
+import com.pfq.deal.trans_listing.bean.output.commody.CommodyInfoVo;
+import com.pfq.deal.trans_listing.bean.output.commody.RetCommodyList;
+import com.pfq.deal.trans_listing.bean.output.commody.RetCommodyVo;
 import com.pfq.deal.trans_listing.dao.ICommodyDao;
 import com.pfq.deal.trans_listing.dao.IOrderDao;
 import com.pfq.deal.trans_listing.dao.IShopDao;
 import com.pfq.deal.trans_listing.dto.OrderDetailsInfoDTO;
 import com.pfq.deal.trans_listing.dto.OrderTotalDTO;
 import com.pfq.deal.trans_listing.dto.ShopCommodyDto;
+import com.pfq.deal.trans_listing.exception.BusinessException;
 import com.pfq.deal.trans_listing.util.DateUtils;
 import lombok.experimental.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class OrderService extends IBaseService{
 
     @Autowired
     IShopDao shopDao;
+
+    @Autowired
+    CommodyService commodyService;
 
 
     @Override
@@ -73,6 +77,7 @@ public class OrderService extends IBaseService{
                .address(inputVo.getAddress())
                .onLineFlag((byte)0)
                .orderNo(getOrderNo())
+               .shopId(inputVo.getShopId())
                .orderTime(DateUtils.getDateString(new Date()))
                .siteNo(inputVo.getSiteNo())
                .point(inputVo.getPoint());
@@ -186,21 +191,24 @@ public class OrderService extends IBaseService{
             OrderDetailsInfoDTO dto=toDetailsDTO(vo,orderInfo.getOrderNo(),orderInfo.getSiteNo(),null);
             list.add(dto);
         });
+        list.forEach(vo-> {
+                    orderDao.updateDetails(orderInfo.getOrderNo(), vo);
+                });
 
-        orderDao.updateDetails(orderInfo.getOrderNo(),list);
-
-        List<Long> ids=orderDao.getTotalIdsByDetailsId(list);
-
-        orderDao.updateTotalInfo(ids);
+        orderDao.updateTotalInfo(orderInfo.getOrderNo());
 
     }
 
+    @Transactional
     public void deleteOrder(String orderNo, Long totalId) {
+
         orderDao.deleteOrder(orderNo,totalId);
+        orderDao.deleteOrderDetails(orderNo,totalId);
     }
 
-    public void confirmOrder(String orderNo) {
-        orderDao.confirmOrder(orderNo);
+    public void confirmOrder(String orderNo,Long totalId) {
+
+        orderDao.confirmOrder(orderNo,totalId);
     }
 
     public CeculatorOrderInfo ceculatorOrder(String orderNo) {
@@ -229,12 +237,37 @@ public class OrderService extends IBaseService{
     private Map<String,Object> buildPayRequest(OrderTotalInfo totalInfo){
         Map<String,Object> map = new HashMap<>();
         map.put("orderNo",totalInfo.getOrderNo());
+        map.put("siteNo",totalInfo.getSiteNo());
         map.put("totalPrice",totalInfo.getTotalPrice());
         return map;
     }
 
 
     public void confirmPayment(String orderNo) {
+        orderDao.confirmPayOrder(orderNo);
+    }
 
+    public RetCommodyList getUnCookingList(Long shopId) {
+        List<CommodyInfoVo> commodyInfoVoList=new ArrayList<>();
+        RetCommodyList ret = RetCommodyList.builder().retList(commodyInfoVoList).build();
+        List<OrderDetailsInfoDTO> orderDetails=orderDao.getUncookingOrder(shopId);
+        orderDetails.stream().forEach(dto->{
+            RetCommodyVo infoVo=commodyService.findById(dto.getCommodyId());
+            CommodyInfoVo vo=infoVo.getCommodyInfo();
+            vo.setOrderTagName(dto.getTagsName());
+            vo.setSiteNo(dto.getSiteNo());
+            vo.setOrderDetailsId(dto.getId());
+            commodyInfoVoList.add(infoVo.getCommodyInfo());
+        });
+        return ret;
+    }
+
+    @Transactional
+    public void confirmCooking(CookerConfirms infos) {
+        infos.getConfirmsList().stream().forEach(info->{
+            if(1!=orderDao.confirmCooking(info.getId(),info.getNum())){
+                throw new BusinessException("orders has been changed!");
+            }
+        });
     }
 }

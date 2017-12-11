@@ -29,4 +29,6 @@ public class InputOrder {
 
     private Long totalId;
 
+    private Integer shopId;
+
 }

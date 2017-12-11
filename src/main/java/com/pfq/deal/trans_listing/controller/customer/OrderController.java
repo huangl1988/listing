@@ -93,9 +93,9 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/order/{orderNo}",method = RequestMethod.DELETE)
-    public ResponseEntity<IBaseOutput> confirmOrder(@PathVariable String orderNo){
+    public ResponseEntity<IBaseOutput> confirmOrder(@PathVariable String orderNo,Long totalId){
 
-        orderService.confirmOrder(orderNo);
+        orderService.confirmOrder(orderNo,totalId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseOutput());
     }

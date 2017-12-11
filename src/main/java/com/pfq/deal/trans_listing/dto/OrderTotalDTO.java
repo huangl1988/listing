@@ -41,4 +41,6 @@ public class OrderTotalDTO {
 
     private Date inserttime;
 
+    private Integer shopId;
+
 }

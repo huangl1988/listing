@@ -2,6 +2,7 @@ package com.pfq.deal.trans_listing.dao;
 
 import com.pfq.deal.trans_listing.dto.OrderDetailsInfoDTO;
 import com.pfq.deal.trans_listing.dto.OrderTotalDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -16,17 +17,23 @@ public interface IOrderDao {
 
     String findOrderNoBySiteNo(String siteNo);
 
-    List<OrderDetailsInfoDTO> getOrderList(String orderNo);
+    List<OrderDetailsInfoDTO> getOrderList(@Param("orderNo") String orderNo);
 
-    void updateDetails(String orderNo, List<OrderDetailsInfoDTO> list);
+    void updateDetails(@Param("orderNo") String orderNo,@Param("dto") OrderDetailsInfoDTO dto);
 
-    void updateTotalInfo(List<Long> ids);
+    void updateTotalInfo(@Param("orderNo") String orderNo);
 
-    List<Long> getTotalIdsByDetailsId(List<OrderDetailsInfoDTO> list);
+    void deleteOrder(@Param("orderNo") String orderNo,@Param("totalId") Long totalId);
 
-    void deleteOrder(String orderNo, Long totalId);
-
-    void confirmOrder(String orderNo);
+    void confirmOrder(@Param("orderNo") String orderNo,@Param("totalId") Long totalId);
 
     void createPaymentOrder(Map<String, Object> stringObjectMap);
+
+    void confirmPayOrder(@Param("orderNo") String orderNo);
+
+    void deleteOrderDetails(@Param("orderNo") String orderNo,@Param("totalId") Long totalId);
+
+    List<OrderDetailsInfoDTO> getUncookingOrder(Long shopId);
+
+    int confirmCooking(@Param("id") Long id,@Param("num") int num);
 }
