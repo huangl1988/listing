@@ -33,7 +33,7 @@ public interface IOrderDao {
 
     void deleteOrderDetails(@Param("orderNo") String orderNo,@Param("totalId") Long totalId);
 
-    List<OrderDetailsInfoDTO> getUncookingOrder(Long shopId);
+    List<OrderDetailsInfoDTO> getUncookingOrder(@Param("shopId") Long shopId);
 
     int confirmCooking(@Param("id") Long id,@Param("num") int num);
 }

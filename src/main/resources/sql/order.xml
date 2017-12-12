@@ -152,7 +152,7 @@
 		0
 		)
 	</insert>
-	<update id="createPaymentOrder">
+	<update id="confirmPayOrder">
 		UPDATE
 			tb_pay_order
 		SET status=20
@@ -168,5 +168,15 @@
 		WHERE
 			id=#{id} AND  number=#{num} AND  cancel_flag=0
 	</update>
+
+	<select id="getUncookingOrder" resultType="com.pfq.deal.trans_listing.dto.OrderDetailsInfoDTO">
+
+		SELECT
+		<include refid="order_details"/>
+		FROM  tb_order_details
+		INNER JOIN  tb_order_total ON tb_order_details.total_id=tb_order_total.id AND shop_id=#{shopId}
+		WHERE
+			cancel_flag=0 AND  `number`>0 ORDER BY tb_order_details.commody_id ASC ,tb_order_details.inserttime ASC
+	</select>
 
 </mapper>

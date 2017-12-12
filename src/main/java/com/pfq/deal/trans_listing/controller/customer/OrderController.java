@@ -22,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
+@RequestMapping("")
 public class OrderController {
 
     @Autowired
@@ -38,7 +39,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseOutput());
     }
 
-    @RequestMapping(value = "/order/{orderNo}",method = RequestMethod.POST)
+    @RequestMapping(value = "/order/extends/{orderNo}",method = RequestMethod.POST)
     public ResponseEntity<IBaseOutput> orderExtends(@PathVariable String orderNo,@RequestBody InputOrder inputVo){
 
         orderService.orderExtends(inputVo,orderNo);
@@ -53,7 +54,7 @@ public class OrderController {
 
         OrderTotalInfo orderTotalInfo=orderService.orderInfo(orderNo);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderTotalInfo);
+        return ResponseEntity.status(HttpStatus.OK).body(orderTotalInfo);
     }
 
     @RequestMapping(value = "/order/{orderNo}",method = RequestMethod.GET)
@@ -61,17 +62,17 @@ public class OrderController {
 
         OrderTotalInfo orderTotalInfo=orderService.orderInfo(orderNo);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderTotalInfo);
+        return ResponseEntity.status(HttpStatus.OK).body(orderTotalInfo);
     }
 
     @RequestMapping(value = "/order/{orderNo}",method = RequestMethod.POST)
-    public ResponseEntity<IBaseOutput> reduceOrder(@PathVariable String orderNo,UpdateOrder orderInfo){
+    public ResponseEntity<IBaseOutput> reduceOrder(@PathVariable String orderNo,@RequestBody  UpdateOrder orderInfo){
 
         orderInfo.setOrderNo(orderNo);
 
         orderService.reduceOrder(orderInfo);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseOutput());
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
     }
 
     @RequestMapping(value = "/order/{orderNo}/{totalId}",method = RequestMethod.DELETE)
@@ -81,7 +82,7 @@ public class OrderController {
 
         orderService.deleteOrder(orderNo,totalId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseOutput());
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
     }
 
     @RequestMapping(value = "/order/{orderNo}",method = RequestMethod.DELETE)
@@ -89,15 +90,15 @@ public class OrderController {
 
         orderService.deleteOrder(orderNo,null);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseOutput());
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
     }
 
-    @RequestMapping(value = "/order/{orderNo}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/order/{orderNo}/confirm",method = RequestMethod.POST)
     public ResponseEntity<IBaseOutput> confirmOrder(@PathVariable String orderNo,Long totalId){
 
         orderService.confirmOrder(orderNo,totalId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseOutput());
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
     }
 
     @RequestMapping(value = "/order/{orderNo}/ceculator",method = RequestMethod.GET)
@@ -105,7 +106,7 @@ public class OrderController {
 
         CeculatorOrderInfo info=orderService.ceculatorOrder(orderNo);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(info);
+        return ResponseEntity.status(HttpStatus.OK).body(info);
     }
 
     @RequestMapping(value = "/order/{orderNo}/pay",method = RequestMethod.POST)
@@ -113,15 +114,7 @@ public class OrderController {
 
         PayOrderRes res=orderService.payOrder(orderNo);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(res);
-    }
-
-    @RequestMapping(value = "/order/{orderNo}/confirmPayment",method = RequestMethod.POST)
-    public ResponseEntity<IBaseOutput> confirmPayment(@PathVariable String orderNo){
-
-       orderService.confirmPayment(orderNo);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseOutput());
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
 }
