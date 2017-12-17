@@ -9,6 +9,9 @@ import com.pfq.deal.trans_listing.bean.output.Order.OrderTotalInfo;
 import com.pfq.deal.trans_listing.bean.output.Order.PayOrderRes;
 import com.pfq.deal.trans_listing.dao.IOrderDao;
 import com.pfq.deal.trans_listing.service.OrderService;
+import com.pfq.deal.trans_listing.service.ShopService;
+import com.pfq.deal.trans_listing.service.intfc.MyPathavalibe;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,14 +50,24 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new BaseOutput());
     }
 
-    @RequestMapping(value = "/order/{siteNo}",method = RequestMethod.GET)
-    public ResponseEntity<IBaseOutput> lastOrderInfoBySiteNo(@PathVariable String siteNo){
+    @RequestMapping(value = "/order/{shopId}/{siteNo}",method = RequestMethod.GET)
+    public ResponseEntity<IBaseOutput> lastOrderInfoBySiteNo(@PathVariable String siteNo,@MyPathavalibe(clz=ShopService.class) Integer shopId){
 
-        String orderNo=orderDao.findOrderNoBySiteNo(siteNo);
+        String orderNo=orderDao.findOrderNoBySiteNo(siteNo,shopId);
+        
+        Integer status = orderDao.getPayStatus(orderNo);
+        if(status!=null&&status>=20)
+        	return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
+        try {
+        	 OrderTotalInfo orderTotalInfo=orderService.orderInfo(orderNo);
+        	 return ResponseEntity.status(HttpStatus.OK).body(orderTotalInfo);
+		} catch (Exception e) {
+			log.error("error",e);
+			throw e;
+		}
+        
 
-        OrderTotalInfo orderTotalInfo=orderService.orderInfo(orderNo);
-
-        return ResponseEntity.status(HttpStatus.OK).body(orderTotalInfo);
+        
     }
 
     @RequestMapping(value = "/order/{orderNo}",method = RequestMethod.GET)

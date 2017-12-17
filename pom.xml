@@ -524,35 +524,14 @@
 
 	<build>
 		<finalName>trans-biz</finalName>
-			<pluginManagement>
+			
 			<plugins>
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 				</plugin>
-				<!-- 这个插件配置了不同环境打包的功能，改用maven-resources-plugin插件也可以 -->
-				<plugin>
-					<artifactId>maven-antrun-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>compile</id>
-							<phase>compile</phase>
-							<goals>
-								<goal>run</goal>
-							</goals>
-							<configuration>
-								<tasks>
-									<copy todir="target/classes/" overwrite="true">
-										<fileset dir="target/classes/env/${env}" />
-									</copy>
-									<delete dir="target/classes/env/" />
-								</tasks>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
+				
 			</plugins>
-		</pluginManagement>
+		
 	</build>
 </project>

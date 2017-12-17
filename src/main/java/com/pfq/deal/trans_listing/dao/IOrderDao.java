@@ -11,11 +11,11 @@ import java.util.Map;
  * Created by steven on 2017/12/4.
  */
 public interface IOrderDao {
-    void save(OrderTotalDTO totalDTO);
+    int save(OrderTotalDTO totalDTO);
 
     void saveDetails(OrderDetailsInfoDTO detailsInfoDTO);
 
-    String findOrderNoBySiteNo(String siteNo);
+    String findOrderNoBySiteNo(@Param("siteNo") String siteNo,@Param("shopId") Integer shopId);
 
     List<OrderDetailsInfoDTO> getOrderList(@Param("orderNo") String orderNo);
 
@@ -36,4 +36,6 @@ public interface IOrderDao {
     List<OrderDetailsInfoDTO> getUncookingOrder(@Param("shopId") Long shopId);
 
     int confirmCooking(@Param("id") Long id,@Param("num") int num);
+
+	Integer getPayStatus(@Param("orderNo")String orderNo);
 }

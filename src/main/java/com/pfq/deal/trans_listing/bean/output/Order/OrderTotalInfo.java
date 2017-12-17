@@ -26,5 +26,7 @@ public class OrderTotalInfo extends BaseOutput {
     private List<RetOrderInfo> list;
 
     private String siteNo;
+    
+    private Integer shopId;
 
 }

@@ -39,9 +39,9 @@
 		  	0,
 		  	#{address},
 		  	#{point},
-		  	#{shop_id},
+		  	#{shopId},
 		  	0
-		FROM tb_order_details WHERE  not exists(SELECT 1 FROM  tb_pay_order WHERE  site_no=#{siteNo} AND status &lt;20) limit 1)
+		FROM tb_order_details WHERE  not exists(SELECT 1 FROM  tb_pay_order WHERE  site_no=#{siteNo} AND shop_id=#{shopId} AND status &lt;20) limit 1)
 	</insert>
 	
 	<insert id="saveDetails" parameterType="com.pfq.deal.trans_listing.dto.OrderDetailsInfoDTO">
@@ -71,8 +71,8 @@
 		)
 	</insert>
 	
-	<select id="findOrderNoBySiteNo" parameterType="String" resultType="String">
-		SELECT order_no FROM tb_order_total where site_no=#{siteNo} order by inserttime desc limit 1
+	<select id="findOrderNoBySiteNo" resultType="String">
+		SELECT order_no FROM tb_order_total where site_no=#{siteNo} AND shop_id=#{shopId} order by inserttime desc limit 1
 	</select>
 	
 	<select id="getOrderList" resultType="com.pfq.deal.trans_listing.dto.OrderDetailsInfoDTO">
@@ -144,10 +144,13 @@
 			order_no,
 			price_total,
 			site_no,
+			shop_id,
 			status
 		)VALUES (
 		#{orderNo},
+		
 		#{totalPrice},
+		#{shopId},
 		#{siteNo},
 		0
 		)
@@ -179,4 +182,9 @@
 			cancel_flag=0 AND  `number`>0 ORDER BY tb_order_details.commody_id ASC ,tb_order_details.inserttime ASC
 	</select>
 
+	<select id="getPayStatus" resultType="Integer">
+		SELECT status FROM tb_pay_order 
+		WHERE
+			order_no=#{orderNo}
+	</select>
 </mapper>

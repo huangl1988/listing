@@ -16,6 +16,8 @@ import com.pfq.deal.trans_listing.dto.OrderTotalDTO;
 import com.pfq.deal.trans_listing.dto.ShopCommodyDto;
 import com.pfq.deal.trans_listing.exception.BusinessException;
 import com.pfq.deal.trans_listing.util.DateUtils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import lombok.experimental.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +54,11 @@ public class OrderService extends IBaseService{
         OrderTotalDTO totalDTO=toTotalDTO(inputVo);
         if(orderNo!=null)
             totalDTO.setOrderNo(orderNo);
-        orderDao.save(totalDTO);
+        
+        if(orderDao.save(totalDTO)<1) {
+        	throw new BusinessException("has one order in pay");
+        };
+        
         inputVo.getOrderList().stream().forEach(detail->{
             OrderDetailsInfoDTO detailsInfoDTO=toDetailsDTO(detail,totalDTO.getOrderNo(),totalDTO.getSiteNo(),totalDTO.getId());
             orderDao.saveDetails(detailsInfoDTO);
@@ -152,6 +158,7 @@ public class OrderService extends IBaseService{
             if(currentDetails.getTotalId()!=dto.getTotalId()){
                 RetOrderInfo retOrderInfo=RetOrderInfo.builder()
                         .inserttime(DateUtils.getDateString(dto.getInserttime()))
+                        .totalPrice(new BigDecimal("0"))
                         .list(new ArrayList<>())
                         .build();
                 infoList.add(retOrderInfo);
@@ -238,6 +245,7 @@ public class OrderService extends IBaseService{
         Map<String,Object> map = new HashMap<>();
         map.put("orderNo",totalInfo.getOrderNo());
         map.put("siteNo",totalInfo.getSiteNo());
+        map.put("shopId", totalInfo.getShopId());
         map.put("totalPrice",totalInfo.getTotalPrice());
         return map;
     }
