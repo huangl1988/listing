@@ -25,6 +25,9 @@ public class CommodyInfoVo {
     private String commodyName;
     private String commodyCode;
     private Integer isSelect;
+    private String orderTagName;
     private List<TagInfo> tags;
+    private String siteNo;
+    private Long orderDetailsId;
     private List<StyleCookingInfo> styleNames;
 }

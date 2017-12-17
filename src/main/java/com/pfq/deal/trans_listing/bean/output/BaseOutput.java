@@ -16,11 +16,11 @@ public class BaseOutput implements IBaseOutput {
 	/**
 	 * 返回值
 	 */
-	private String code;
+	private String code="succ";
 	/**
 	 * 返回结果
 	 */
-	private String msg;
+	private String msg="succ";
 
 	public void doSucc(){
 		code="succ";

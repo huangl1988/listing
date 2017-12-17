@@ -17,6 +17,13 @@ public class DateUtils {
 		String reStr = sdf.format(date);
 		return reStr;
 	}
+	public static String getDateStringYYYYMMDDHHSSSSS(Date date) {
+		if(date==null)
+			return null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String reStr = sdf.format(date);
+		return reStr;
+	}
 
 	public static Date getTimeDate(String time) {
 		if(time==null)
