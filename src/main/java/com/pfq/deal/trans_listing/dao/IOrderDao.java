@@ -15,7 +15,9 @@ public interface IOrderDao {
 
     void saveDetails(OrderDetailsInfoDTO detailsInfoDTO);
 
-    String findOrderNoBySiteNo(@Param("siteNo") String siteNo,@Param("shopId") Integer shopId);
+    OrderTotalDTO findOrderNoBySiteNo(@Param("siteNo") String siteNo,@Param("shopId") Integer shopId);
+    
+    List<OrderTotalDTO> getTotalList(@Param("orderNo") String orderNo);
 
     List<OrderDetailsInfoDTO> getOrderList(@Param("orderNo") String orderNo);
 
@@ -38,4 +40,6 @@ public interface IOrderDao {
     int confirmCooking(@Param("id") Long id,@Param("num") int num);
 
 	Integer getPayStatus(@Param("orderNo")String orderNo);
+	
+	List<String> listOrderNo();
 }

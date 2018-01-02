@@ -22,6 +22,5 @@ public class UpdateOrder {
 
     private String siteNo;
 
-
-
+    private Long totalId;
 }

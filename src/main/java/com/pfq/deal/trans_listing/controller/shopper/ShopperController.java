@@ -2,6 +2,7 @@ package com.pfq.deal.trans_listing.controller.shopper;
 
 import com.pfq.deal.trans_listing.bean.output.BaseOutput;
 import com.pfq.deal.trans_listing.bean.output.IBaseOutput;
+import com.pfq.deal.trans_listing.bean.output.Order.PayOrderRes;
 import com.pfq.deal.trans_listing.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,12 @@ public class ShopperController {
         return ResponseEntity.status(HttpStatus.OK).body(new BaseOutput());
     }
 
+    @RequestMapping(value = "/order/{orderNo}/nopay",method = RequestMethod.POST)
+    public ResponseEntity<IBaseOutput> payOrder(@PathVariable String orderNo){
 
+        PayOrderRes res=orderService.payOrder(orderNo,true);
+
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 
 }

@@ -3,6 +3,7 @@ package com.pfq.deal.trans_listing.service;
 import com.pfq.deal.trans_listing.bean.input.order.*;
 import com.pfq.deal.trans_listing.bean.output.Order.OrderDetailsInfo;
 import com.pfq.deal.trans_listing.bean.output.Order.OrderTotalInfo;
+import com.pfq.deal.trans_listing.bean.output.Order.OrderTotalListInfo;
 import com.pfq.deal.trans_listing.bean.output.Order.PayOrderRes;
 import com.pfq.deal.trans_listing.bean.output.Order.RetOrderInfo;
 import com.pfq.deal.trans_listing.bean.output.commody.CommodyInfoVo;
@@ -74,6 +75,7 @@ public class OrderService extends IBaseService{
                 .number(orderInfo.getNum())
                 .orderNo(orderNo)
                 .siteNo(siteNo)
+                .id(orderInfo.getId())
                 .build();
     }
 
@@ -121,9 +123,24 @@ public class OrderService extends IBaseService{
         this.create(inputVo,orderNo);
     }
 
+    public OrderTotalListInfo orderInfoList() {
+    	List<String> listOrderNo = orderDao.listOrderNo();
+    	List<OrderTotalInfo> retList = new ArrayList<>();
+    	OrderTotalListInfo info = new OrderTotalListInfo();
+    	if (listOrderNo != null && listOrderNo.size() > 0) {
+			for (int i = 0; i < listOrderNo.size(); i++) {
+				retList.add(orderInfo(listOrderNo.get(i)));
+			}
+		}
+    	info.setRetList(retList);
+		return info;
+    }
+    
     public OrderTotalInfo orderInfo(String orderNo) {
 
         List<OrderDetailsInfoDTO> dtoList = orderDao.getOrderList(orderNo);
+        
+        List<OrderTotalDTO> totalList = orderDao.getTotalList(orderNo);
 
         Collections.sort(dtoList, new Comparator<OrderDetailsInfoDTO>() {
             @Override
@@ -133,23 +150,29 @@ public class OrderService extends IBaseService{
         });
 
         int totalNum=dtoList.stream().collect(Collectors.summingInt(OrderDetailsInfoDTO::getNumber));
+        String siteNo=dtoList.size() > 0 ? dtoList.get(0).getSiteNo() : "-1";
+        int shopId = totalList.size() > 0 ? totalList.get(0).getShopId() : -1;
+        
 
-        List<RetOrderInfo> infoList=toListRetOrderInfo(dtoList);
+        List<RetOrderInfo> infoList=toListRetOrderInfo(dtoList,totalList);
 
         OrderTotalInfo orderTotalInfo=OrderTotalInfo.builder()
                 .orderNo(orderNo)
                 .totalNum(totalNum)
-                .siteNo(dtoList.get(0).getSiteNo())
+                .siteNo(siteNo)
                 .list(infoList)
+                .shopId(shopId)
                 .build();
        infoList.stream().forEach(info->{
           BigDecimal totalPrice= orderTotalInfo.getTotalPrice()==null?new BigDecimal("0"):orderTotalInfo.getTotalPrice();
-           orderTotalInfo.setTotalPrice(info.getTotalPrice().add(totalPrice));
+          if (info.getConfirmFlag() == 1) {
+        	  orderTotalInfo.setTotalPrice(info.getTotalPrice().add(totalPrice));
+          }
        });
        return orderTotalInfo;
     }
 
-    private List<RetOrderInfo> toListRetOrderInfo(List<OrderDetailsInfoDTO> dtoList){
+    private List<RetOrderInfo> toListRetOrderInfo(List<OrderDetailsInfoDTO> dtoList, List<OrderTotalDTO> totalList){
         List<RetOrderInfo> infoList=new ArrayList<>();
         OrderDetailsInfoDTO currentDetails=OrderDetailsInfoDTO.builder().build();
         currentDetails.setTotalId(0l);
@@ -169,12 +192,18 @@ public class OrderService extends IBaseService{
             retOrderInfo.setTotalNum(retOrderInfo.getTotalNum()+dto.getNumber());
             retOrderInfo.setTotalPrice(retOrderInfo.getTotalPrice()
                     .add(dto.getCommodyPrice().multiply(new BigDecimal(dto.getNumber()))));
-
+            totalList.stream().forEach(tdo->{
+            	if (tdo.getId() == dto.getTotalId()) {
+            		retOrderInfo.setConfirmFlag(tdo.getConfirmFlag());
+            		totalList.stream().close();
+				}
+            });
         });
         return infoList;
     }
 
     private OrderDetailsInfo toOrderDetailsInfo(OrderDetailsInfoDTO dto){
+    	RetCommodyVo co = commodyService.findById(dto.getCommodyId());
         return OrderDetailsInfo.builder()
                 .cancelFlag(dto.getCancelFlag())
                 .commodyId(dto.getCommodyId())
@@ -186,6 +215,7 @@ public class OrderService extends IBaseService{
                 .num(dto.getNumber())
                 .siteNo(dto.getSiteNo())
                 .totalPrice(dto.getCommodyPrice().multiply(new BigDecimal(dto.getNumber())))
+                .commodyInfo(co)
                 .build();
     }
 
@@ -195,14 +225,19 @@ public class OrderService extends IBaseService{
         List<OrderInfo> orderInfoList=orderInfo.getOrderInfoList();
         List<OrderDetailsInfoDTO> list = new ArrayList<>();
         orderInfoList.forEach(vo->{
-            OrderDetailsInfoDTO dto=toDetailsDTO(vo,orderInfo.getOrderNo(),orderInfo.getSiteNo(),null);
+            OrderDetailsInfoDTO dto=toDetailsDTO(vo,orderInfo.getOrderNo(),orderInfo.getSiteNo(),orderInfo.getTotalId());
             list.add(dto);
         });
         list.forEach(vo-> {
-                    orderDao.updateDetails(orderInfo.getOrderNo(), vo);
+        			if (vo.getId() != null) {
+        				orderDao.updateDetails(orderInfo.getOrderNo(), vo);
+					}else {
+						orderDao.saveDetails(vo);
+					}
                 });
 
-        orderDao.updateTotalInfo(orderInfo.getOrderNo());
+        //没写sql
+//        orderDao.updateTotalInfo(orderInfo.getOrderNo());
 
     }
 
@@ -232,21 +267,28 @@ public class OrderService extends IBaseService{
         return ceculatorOrderInfo;
     }
 
-    public PayOrderRes payOrder(String orderNo) {
+    public PayOrderRes payOrder(String orderNo,Boolean isShopper) {
 
         OrderTotalInfo totalInfo=this.orderInfo(orderNo);
-        var map=buildPayRequest(totalInfo);
+        var map=buildPayRequest(totalInfo,isShopper);
         orderDao.createPaymentOrder(map);
 
         return PayOrderRes.builder().retMap(map).build();
     }
 
-    private Map<String,Object> buildPayRequest(OrderTotalInfo totalInfo){
+    private Map<String,Object> buildPayRequest(OrderTotalInfo totalInfo,Boolean isShopper){
         Map<String,Object> map = new HashMap<>();
         map.put("orderNo",totalInfo.getOrderNo());
         map.put("siteNo",totalInfo.getSiteNo());
         map.put("shopId", totalInfo.getShopId());
-        map.put("totalPrice",totalInfo.getTotalPrice());
+        if (isShopper) {
+        	map.put("totalPrice",0);
+        	map.put("status", 30);
+		}else {
+			map.put("totalPrice",totalInfo.getTotalPrice());
+			map.put("status", 0);
+		}
+       
         return map;
     }
 

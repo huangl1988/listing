@@ -24,5 +24,5 @@ public class RetOrderInfo {
 
     private List<OrderDetailsInfo> list;
 
-
+    private int confirmFlag;
 }

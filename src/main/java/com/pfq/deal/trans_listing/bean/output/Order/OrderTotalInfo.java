@@ -28,5 +28,9 @@ public class OrderTotalInfo extends BaseOutput {
     private String siteNo;
     
     private Integer shopId;
+    
+    private Long totalId;
+    
+    private int confirmFlag;
 
 }

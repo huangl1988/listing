@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.pfq.deal.trans_listing.bean.output.commody.RetCommodyVo;
+
 /**
  * Created by steven on 2017/12/5.
  */
@@ -37,5 +39,5 @@ public class OrderDetailsInfo {
 
     private int isCooking;
 
-
+    private RetCommodyVo commodyInfo;
 }
